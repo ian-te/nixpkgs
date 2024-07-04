@@ -4,7 +4,6 @@
 , pkg-config
 , gtk3
 , gnome
-, adwaita-icon-theme
 , gdk-pixbuf
 , librsvg
 , wrapGAppsHook3
@@ -55,7 +54,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     gtk3
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     gdk-pixbuf
     librsvg
     gsound

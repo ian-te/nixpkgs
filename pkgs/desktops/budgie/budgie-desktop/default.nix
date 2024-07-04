@@ -33,7 +33,6 @@
 , vala
 , xfce
 , wrapGAppsHook3
-, zenity
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -71,7 +70,7 @@ stdenv.mkDerivation (finalAttrs: {
     gnome-desktop
     gnome.gnome-settings-daemon
     gnome.mutter
-    zenity
+    gnome.zenity
     graphene
     gst_all_1.gstreamer
     gst_all_1.gst-plugins-base

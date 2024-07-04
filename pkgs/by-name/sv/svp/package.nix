@@ -7,6 +7,7 @@
 , copyDesktopItems
 , ffmpeg
 , glibc
+, gnome
 , jq
 , lib
 , libmediainfo
@@ -19,7 +20,6 @@
 , vapoursynth
 , xdg-utils
 , xorg
-, zenity
 }:
 let
   mpvForSVP = callPackage ./mpv.nix { };
@@ -42,7 +42,7 @@ let
     fakeLsof
     ffmpeg.bin
     glibc
-    zenity
+    gnome.zenity
     libmediainfo
     libsForQt5.qtbase
     libsForQt5.qtwayland

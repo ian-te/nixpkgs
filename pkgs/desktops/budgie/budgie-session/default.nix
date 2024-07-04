@@ -6,7 +6,6 @@
 , ninja
 , pkg-config
 , gnome
-, adwaita-icon-theme
 , glib
 , gtk3
 , gsettings-desktop-schemas
@@ -68,7 +67,7 @@ stdenv.mkDerivation (finalAttrs: {
     gnome-desktop
     json-glib
     xorg.xtrans
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     gnome.gnome-settings-daemon
     gsettings-desktop-schemas
     systemd

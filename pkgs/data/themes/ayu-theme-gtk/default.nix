@@ -2,7 +2,6 @@
 , autoreconfHook
 , fetchFromGitHub
 , gnome
-, gnome-themes-extra
 , gtk-engine-murrine
 , gtk3
 , inkscape
@@ -38,7 +37,7 @@ stdenv.mkDerivation rec {
   ];
 
   propagatedUserEnvPkgs = [
-    gnome-themes-extra
+    gnome.gnome-themes-extra
     gtk-engine-murrine
   ];
 

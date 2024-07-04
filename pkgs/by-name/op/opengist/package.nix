@@ -65,7 +65,7 @@ buildGoModule {
     mainProgram = "opengist";
     homepage = "https://github.com/thomiceli/opengist";
     license = lib.licenses.agpl3Only;
-    maintainers = [ ];
+    maintainers = with lib.maintainers; [ lf- ];
     platforms = lib.platforms.unix;
   };
 }

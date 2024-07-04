@@ -3,27 +3,30 @@
   buildGoModule,
   fetchFromGitHub,
 }:
-buildGoModule rec {
+let
+  version = "1.1.2";
+in
+buildGoModule {
   pname = "superfile";
-  version = "1.1.3";
+  inherit version;
 
-  src = fetchFromGitHub {
-    owner = "yorukot";
-    repo = "superfile";
-    rev = "v${version}";
-    hash = "sha256-z1jcRzID20s7tEDUaEcnOYBfv/BPZtcXz9fy3V5iPPg=";
-  };
+  src =
+    fetchFromGitHub {
+      owner = "MHNightCat";
+      repo = "superfile";
+      rev = "v${version}";
+      hash = "sha256-Cn03oPGT+vCZQcC62p7COx8N8BGgra+qQaZyF+osVsA=";
+    }
+    + "/src";
 
-  vendorHash = "sha256-OzPH7dNu/V4HDGSxrvYxu3s+hw36NiulFZs0BJ44Pjk=";
+  vendorHash = "sha256-gWrhy3qzlXG072u5mW971N2Y4Vmt0KbZkB8SFsFgSzo=";
 
-  ldflags = ["-s" "-w"];
-
-  meta = with lib; {
+  meta = {
+    changelog = "https://github.com/MHNightCat/superfile/blob/v${version}/changelog.md";
     description = "Pretty fancy and modern terminal file manager";
-    homepage = "https://github.com/yorukot/superfile";
-    changelog = "https://github.com/yorukot/superfile/blob/${src.rev}/changelog.md";
-    license = licenses.mit;
-    maintainers = with maintainers; [momeemt];
+    homepage = "https://github.com/MHNightCat/superfile";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ momeemt ];
     mainProgram = "superfile";
   };
 }

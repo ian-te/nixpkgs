@@ -12,21 +12,21 @@
 
 buildPythonPackage rec {
   pname = "dvc-studio-client";
-  version = "0.21.0";
-  pyproject = true;
+  version = "0.20.0";
+  format = "pyproject";
 
-  disabled = pythonOlder "3.9";
+  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "iterative";
-    repo = "dvc-studio-client";
+    repo = pname;
     rev = "refs/tags/${version}";
-    hash = "sha256-SCRMBZKOt8JtDi5aGgk6TCxetvG3QU1jOv6U5/6ChTE=";
+    hash = "sha256-JLrsbgifoUnN1Mwml9tO3/SkA6miE14AGjxrFwEcRks=";
   };
 
-  build-system = [ setuptools-scm ];
+  nativeBuildInputs = [ setuptools-scm ];
 
-  dependencies = [
+  propagatedBuildInputs = [
     dulwich
     gitpython
     requests

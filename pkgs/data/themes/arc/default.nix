@@ -5,7 +5,6 @@
 , ninja
 , glib
 , gnome
-, gnome-themes-extra
 , gtk-engine-murrine
 , inkscape
 , cinnamon
@@ -34,7 +33,7 @@ stdenv.mkDerivation rec {
   ];
 
   propagatedUserEnvPkgs = [
-    gnome-themes-extra
+    gnome.gnome-themes-extra
     gtk-engine-murrine
   ];
 

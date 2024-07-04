@@ -89,7 +89,7 @@ in
       sessionPath = mkOption {
         default = [];
         type = types.listOf types.package;
-        example = literalExpression "[ pkgs.gpaste ]";
+        example = literalExpression "[ pkgs.gnome.gpaste ]";
         description = ''
           Additional list of packages to be added to the session search path.
           Useful for GNOME Shell extensions or GSettings-conditional autostart.
@@ -176,7 +176,7 @@ in
 
     environment.gnome.excludePackages = mkOption {
       default = [];
-      example = literalExpression "[ pkgs.totem ]";
+      example = literalExpression "[ pkgs.gnome.totem ]";
       type = types.listOf types.package;
       description = "Which packages gnome should exclude from the default environment";
     };
@@ -373,7 +373,7 @@ in
             gnome-shell
           ];
           optionalPackages = with pkgs.gnome; [
-            pkgs.adwaita-icon-theme
+            adwaita-icon-theme
             nixos-background-info
             gnome-backgrounds
             gnome-bluetooth
@@ -399,28 +399,28 @@ in
         with pkgs.gnome;
         utils.removePackagesByName
           ([
-            pkgs.baobab
-            pkgs.epiphany
+            baobab
+            epiphany
             pkgs.gnome-text-editor
-            pkgs.gnome-calculator
-            pkgs.gnome-calendar
+            gnome-calculator
+            gnome-calendar
             gnome-characters
             gnome-clocks
             pkgs.gnome-console
             gnome-contacts
-            pkgs.gnome-font-viewer
+            gnome-font-viewer
             gnome-logs
             gnome-maps
             gnome-music
-            pkgs.gnome-system-monitor
+            gnome-system-monitor
             gnome-weather
             pkgs.loupe
-            pkgs.nautilus
+            nautilus
             pkgs.gnome-connections
-            pkgs.simple-scan
+            simple-scan
             pkgs.snapshot
-            pkgs.totem
-            pkgs.yelp
+            totem
+            yelp
           ] ++ lib.optionals config.services.flatpak.enable [
             # Since PackageKit Nix support is not there yet,
             # only install gnome-software if flatpak is enabled.
@@ -432,12 +432,12 @@ in
       # Since some of these have a corresponding package, we only
       # enable that program module if the package hasn't been excluded
       # through `environment.gnome.excludePackages`
-      programs.evince.enable = notExcluded pkgs.evince;
-      programs.file-roller.enable = notExcluded pkgs.file-roller;
-      programs.geary.enable = notExcluded pkgs.geary;
-      programs.gnome-disks.enable = notExcluded pkgs.gnome-disk-utility;
-      programs.seahorse.enable = notExcluded pkgs.seahorse;
-      services.gnome.sushi.enable = notExcluded pkgs.sushi;
+      programs.evince.enable = notExcluded pkgs.gnome.evince;
+      programs.file-roller.enable = notExcluded pkgs.gnome.file-roller;
+      programs.geary.enable = notExcluded pkgs.gnome.geary;
+      programs.gnome-disks.enable = notExcluded pkgs.gnome.gnome-disk-utility;
+      programs.seahorse.enable = notExcluded pkgs.gnome.seahorse;
+      services.gnome.sushi.enable = notExcluded pkgs.gnome.sushi;
 
       # VTE shell integration for gnome-console
       programs.bash.vteIntegration = mkDefault true;
@@ -482,9 +482,9 @@ in
 
     # Adapt from https://gitlab.gnome.org/GNOME/gnome-build-meta/-/blob/3.38.0/elements/core/meta-gnome-core-developer-tools.bst
     (lib.mkIf serviceCfg.core-developer-tools.enable {
-      environment.systemPackages = utils.removePackagesByName [
-        pkgs.dconf-editor
-        pkgs.devhelp
+      environment.systemPackages = with pkgs.gnome; utils.removePackagesByName [
+        dconf-editor
+        devhelp
         pkgs.gnome-builder
         # boxes would make sense in this option, however
         # it doesn't function well enough to be included

@@ -2,7 +2,7 @@
 , runCommand
 , nixos-artwork
 , glib
-, gnome-terminal
+, gnome
 , gtk3
 , gsettings-desktop-schemas
 , extraGSettingsOverrides ? ""
@@ -36,7 +36,7 @@ let
     cinnamon-session
     cinnamon-settings-daemon
     cinnamon-common
-    gnome-terminal
+    gnome.gnome-terminal
     gsettings-desktop-schemas
     gtk3
   ] ++ extraGSettingsOverridePackages;

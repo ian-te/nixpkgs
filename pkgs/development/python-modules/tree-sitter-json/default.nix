@@ -1,7 +1,11 @@
 { lib
 , buildPythonPackage
 , fetchFromGitHub
+, cargo
+, rustPlatform
+, rustc
 , setuptools
+, wheel
 , tree-sitter
 }:
 
@@ -17,8 +21,22 @@ buildPythonPackage rec {
     hash = "sha256-waejAbS7MjrE7w03MPqvBRpEpqTcKc6RgKCVSYaDV1Y=";
   };
 
+  cargoDeps = rustPlatform.importCargoLock {
+    # Upstream doesn't track a Cargo.lock file unfortunatly, but they barely
+    # have rust dependencies so it doesn't cost us too much.
+    lockFile = ./Cargo.lock;
+  };
+
+  postPatch = ''
+    ln -s ${./Cargo.lock} Cargo.lock
+  '';
+
   build-system = [
+    cargo
+    rustPlatform.cargoSetupHook
+    rustc
     setuptools
+    wheel
   ];
 
   passthru.optional-dependencies = {

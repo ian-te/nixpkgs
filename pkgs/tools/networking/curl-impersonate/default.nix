@@ -173,7 +173,7 @@ let
       description = "Special build of curl that can impersonate Chrome & Firefox";
       homepage = "https://github.com/lwthiker/curl-impersonate";
       license = with licenses; [ curl mit ];
-      maintainers = with maintainers; [ deliciouslytyped ];
+      maintainers = with maintainers; [ deliciouslytyped lilyinstarlight ];
       platforms = platforms.unix;
       mainProgram = "curl-impersonate-${name}";
     };

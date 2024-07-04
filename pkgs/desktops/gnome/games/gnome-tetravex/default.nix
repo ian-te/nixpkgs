@@ -4,7 +4,6 @@
 , fetchpatch
 , pkg-config
 , gnome
-, adwaita-icon-theme
 , gtk3
 , wrapGAppsHook3
 , libxml2
@@ -41,7 +40,7 @@ stdenv.mkDerivation rec {
     wrapGAppsHook3
     itstool
     libxml2
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     pkg-config
     gettext
     meson

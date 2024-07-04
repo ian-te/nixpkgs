@@ -13,7 +13,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.geary ];
+    environment.systemPackages = [ pkgs.gnome.geary ];
     programs.dconf.enable = true;
     services.gnome.gnome-keyring.enable = true;
     services.gnome.gnome-online-accounts.enable = true;

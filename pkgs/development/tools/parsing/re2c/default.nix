@@ -35,10 +35,7 @@ stdenv.mkDerivation rec {
   '';
 
   passthru = {
-    updateScript = nix-update-script {
-      # Skip non-release tags like `python-experimental`.
-      extraArgs = [ "--version-regex" "([0-9.]+)" ];
-    };
+    updateScript = nix-update-script { };
     tests = {
       inherit ninja php spamassassin;
     };

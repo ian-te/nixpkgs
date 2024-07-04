@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
     description = "2d dogfighting game";
     mainProgram = "airstrike";
     homepage = "https://icculus.org/airstrike/";
-    license = licenses.gpl2Only;
+    license = licenses.gpl2;
     maintainers = with maintainers; [ pSub ];
     platforms = platforms.linux;
   };

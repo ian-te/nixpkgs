@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/bderrly/braincurses";
     description = "Version of the classic game Mastermind";
     mainProgram = "braincurses";
-    license = licenses.gpl2Only;
+    license = licenses.gpl2;
     maintainers = with maintainers; [ dotlambda ];
     platforms = platforms.linux;
   };

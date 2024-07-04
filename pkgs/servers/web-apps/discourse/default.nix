@@ -41,7 +41,6 @@
 , jq
 , moreutils
 , terser
-, uglify-js
 
 , plugins ? []
 }@args:
@@ -215,7 +214,7 @@ let
     nativeBuildInputs = runtimeDeps ++ [
       postgresql
       redis
-      uglify-js
+      nodePackages.uglify-js
       terser
       yarn
       jq

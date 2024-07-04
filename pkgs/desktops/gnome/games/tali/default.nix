@@ -5,7 +5,6 @@
   pkg-config,
   gtk3,
   gnome,
-  adwaita-icon-theme,
   gdk-pixbuf,
   librsvg,
   libgnome-games-support,
@@ -34,7 +33,7 @@ stdenv.mkDerivation rec {
     python3
     desktop-file-utils
     pkg-config
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     libxml2
     itstool
     gettext

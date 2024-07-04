@@ -13,7 +13,7 @@ import ./make-test-python.nix ({ pkgs, lib, ... }: {
     environment.cinnamon.excludePackages = [ pkgs.gnome-text-editor ];
 
     # For the sessionPath subtest.
-    services.xserver.desktopManager.cinnamon.sessionPath = [ pkgs.gpaste ];
+    services.xserver.desktopManager.cinnamon.sessionPath = [ pkgs.gnome.gpaste ];
   };
 
   enableOCR = true;

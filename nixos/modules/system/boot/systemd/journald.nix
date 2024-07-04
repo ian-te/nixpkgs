@@ -72,7 +72,7 @@ in {
       type = types.lines;
       example = "Storage=volatile";
       description = ''
-        Extra config options for systemd-journald. See {manpage}`journald.conf(5)`
+        Extra config options for systemd-journald. See man journald.conf
         for available options.
       '';
     };

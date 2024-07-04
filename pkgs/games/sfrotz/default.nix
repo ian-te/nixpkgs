@@ -63,7 +63,7 @@ stdenv.mkDerivation rec {
     '';
     homepage = "https://davidgriffith.gitlab.io/frotz/";
     changelog = "https://gitlab.com/DavidGriffith/frotz/-/raw/${version}/NEWS";
-    license = licenses.gpl2Plus;
+    license = licenses.gpl2;
     maintainers = with maintainers; [ ddelabru ];
     platforms = platforms.linux;
   };

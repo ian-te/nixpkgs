@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "traefik";
-  version = "3.0.4";
+  version = "3.0.3";
 
   # Archive with static assets for webui
   src = fetchzip {
     url = "https://github.com/traefik/traefik/releases/download/v${version}/traefik-v${version}.src.tar.gz";
-    hash = "sha256-9dxg9UL6wkoIs2ql+pLHzd2z+w83vzXYN6zRRLtIegQ=";
+    hash = "sha256-vjY8sbNkY/kdQiJ020iUWxIVzxkmpkeLhxBThc6tUuE=";
     stripRoot = false;
   };
 
-  vendorHash = "sha256-4zI4OL4UlaaefxRPQoUtjyn9M8yfuYOBOyYh6vTnMJg=";
+  vendorHash = "sha256-rvo3nw9yUfikO82cy6BbukwqwBSrUCCEta3nKBprCbk=";
 
   subPackages = [ "cmd/traefik" ];
 

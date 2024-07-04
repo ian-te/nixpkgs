@@ -1,17 +1,17 @@
 { lib, stdenv, fetchurl, gettext, pkg-config, perlPackages
 , libidn2, zlib, pcre, libuuid, libiconv, libintl
-, python3, lzip, darwin
+, python3, lzip
 , withLibpsl ? false, libpsl
 , withOpenssl ? true, openssl
 }:
 
 stdenv.mkDerivation rec {
   pname = "wget";
-  version = "1.24.5";
+  version = "1.21.4";
 
   src = fetchurl {
-    url = "mirror://gnu/wget/wget-${version}.tar.lz";
-    hash = "sha256-V6EHFR5O+U/flK/+z6xZiWPzcvEyk+2cdAMhBTkLNu4=";
+    url = "mirror://gnu/wget/${pname}-${version}.tar.lz";
+    hash = "sha256-NoNhml9Q7cvMsXIKeQBvo3v5uaJVqMW0gEi8PHqHS9k=";
   };
 
   patches = [
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
     ++ lib.optionals doCheck [ perlPackages.IOSocketSSL perlPackages.LWP python3 ]
     ++ lib.optional withOpenssl openssl
     ++ lib.optional withLibpsl libpsl
-    ++ lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.CoreServices perlPackages.perl ];
+    ++ lib.optional stdenv.isDarwin perlPackages.perl;
 
   configureFlags = [
     (lib.withFeatureAs withOpenssl "ssl" "openssl")

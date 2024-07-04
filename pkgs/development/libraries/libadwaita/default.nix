@@ -13,7 +13,6 @@
 , glib
 , gtk4
 , gnome
-, adwaita-icon-theme
 , gsettings-desktop-schemas
 , desktop-file-utils
 , xvfb-run
@@ -24,7 +23,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "libadwaita";
-  version = "1.5.2";
+  version = "1.5.1";
 
   outputs = [ "out" "dev" "devdoc" ];
   outputBin = "devdoc"; # demo app
@@ -34,7 +33,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "GNOME";
     repo = "libadwaita";
     rev = finalAttrs.version;
-    hash = "sha256-0Zu6knxP6GiqJMtwd8uRN72Lf7JfwB6JWjS1ggeANPM=";
+    hash = "sha256-dH0VPIt6SGTDcb1I72cKnNlyqZ3dptvKmMDjOd17BfA=";
   };
 
   depsBuildBuild = [
@@ -71,7 +70,7 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   nativeCheckInputs = [
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
   ] ++ lib.optionals (!stdenv.isDarwin) [
     xvfb-run
   ];

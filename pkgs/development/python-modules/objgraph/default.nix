@@ -8,13 +8,12 @@
   python,
   pythonOlder,
   substituteAll,
-  setuptools,
 }:
 
 buildPythonPackage rec {
   pname = "objgraph";
   version = "3.6.1";
-  pyproject = true;
+  format = "setuptools";
 
   disabled = pythonOlder "3.7" || isPyPy;
 
@@ -28,10 +27,6 @@ buildPythonPackage rec {
       src = ./hardcode-graphviz-path.patch;
       graphviz = graphvizPkgs;
     })
-  ];
-
-  build-system = [
-    setuptools
   ];
 
   passthru.optional-dependencies = {

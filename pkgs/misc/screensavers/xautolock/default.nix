@@ -30,7 +30,7 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "http://www.ibiblio.org/pub/linux/X11/screensavers";
     maintainers = with maintainers; [ peti ];
     platforms = platforms.linux;
-    license = licenses.gpl2Only;
+    license = licenses.gpl2;
     mainProgram = "xautolock";
   };
 })

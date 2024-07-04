@@ -202,10 +202,10 @@ in {
     ];
 
     services = {
-      fcgiwrap.zoneminder = lib.mkIf useNginx {
-        process.prefork = cfg.cameras;
-        process.user = user;
-        process.group = group;
+      fcgiwrap = lib.mkIf useNginx {
+        enable = true;
+        preforkProcesses = cfg.cameras;
+        inherit user group;
       };
 
       mysql = lib.mkIf cfg.database.createLocally {
@@ -225,7 +225,9 @@ in {
             default = true;
             root = "${pkg}/share/zoneminder/www";
             listen = [ { addr = "0.0.0.0"; inherit (cfg) port; } ];
-            extraConfig = ''
+            extraConfig = let
+              fcgi = config.services.fcgiwrap;
+            in ''
               index index.php;
 
               location / {
@@ -255,7 +257,7 @@ in {
                   fastcgi_param HTTP_PROXY "";
                   fastcgi_intercept_errors on;
 
-                  fastcgi_pass unix:${config.services.fcgiwrap.zoneminder.socket.address};
+                  fastcgi_pass ${fcgi.socketType}:${fcgi.socketAddress};
                 }
 
                 location /cache/ {

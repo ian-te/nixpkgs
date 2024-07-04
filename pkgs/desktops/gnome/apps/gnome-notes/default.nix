@@ -20,7 +20,6 @@
 , libhandy
 , webkitgtk
 , gnome
-, adwaita-icon-theme
 , libxml2
 , gsettings-desktop-schemas
 , tracker
@@ -75,7 +74,7 @@ stdenv.mkDerivation rec {
     gnome-online-accounts
     gsettings-desktop-schemas
     evolution-data-server
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
   ];
 
   mesonFlags = [

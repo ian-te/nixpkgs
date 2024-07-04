@@ -6,7 +6,6 @@
 , pkg-config
 , networkmanager
 , gnome
-, adwaita-icon-theme
 , libsecret
 , polkit
 , modemmanager
@@ -52,7 +51,7 @@ stdenv.mkDerivation rec {
     glib
     glib-networking
     libayatana-appindicator
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
   ];
 
   nativeBuildInputs = [

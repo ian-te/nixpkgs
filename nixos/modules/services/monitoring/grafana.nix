@@ -105,7 +105,7 @@ let
       };
       url = mkOption {
         type = types.str;
-        default = "";
+        default = "localhost";
         description = "Url of the datasource.";
       };
       editable = mkOption {

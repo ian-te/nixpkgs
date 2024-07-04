@@ -183,7 +183,7 @@ in lib.makeExtensible (self: ({
   };
 
   git = common rec {
-    version = "2.24.0";
+    version = "2.23.1";
     suffix = "pre20240627_${lib.substring 0 8 src.rev}";
     src = fetchFromGitHub {
       owner = "NixOS";

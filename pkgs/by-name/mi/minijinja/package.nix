@@ -2,16 +2,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "minijinja";
-  version = "2.0.3";
+  version = "2.0.2";
 
   src = fetchFromGitHub {
     owner = "mitsuhiko";
     repo = "minijinja";
     rev = version;
-    hash = "sha256-3Frgeudh1Z4gpQJqyLxBZKi7gr4GIGLv7gW4Qf3LdVs=";
+    hash = "sha256-aqoUsVj9XYlbi8wh2Rqxy+M9+RU9NLp97qlpTKUlJEI=";
   };
 
-  cargoHash = "sha256-7ohhnuy8baELLDvf0FfdJmSf62wtmnEfI2rl9yZp03w=";
+  cargoHash = "sha256-G9nIlri7VwojNRsCwZxseZxcSxLqAKtnm+AV7TLqJm4=";
 
   # The tests relies on the presence of network connection
   doCheck = false;

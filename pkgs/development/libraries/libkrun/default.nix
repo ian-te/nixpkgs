@@ -13,18 +13,18 @@
 
 stdenv.mkDerivation rec {
   pname = "libkrun";
-  version = "1.9.3";
+  version = "1.9.2";
 
   src = fetchFromGitHub {
     owner = "containers";
     repo = "libkrun";
     rev = "refs/tags/v${version}";
-    hash = "sha256-LIp2/794gbHPweBJcHCjbF0m+bJAs0SPF7WivW7fxLI=";
+    hash = "sha256-R8JofaoqEM6IL4mr10kOWH0GfqwuyG2qkFjGR1+0fXw=";
   };
 
   cargoDeps = rustPlatform.fetchCargoTarball {
     inherit pname version src;
-    hash = "sha256-g4ceYi16mjEgvWTAQEW8ShT/e5IKnlgLgk49Mg0N2fQ=";
+    hash = "sha256-gPWTFl5YrlWDBXyksc9TidOzQf42bSJ05pdqtErk844=";
   };
 
   nativeBuildInputs = [

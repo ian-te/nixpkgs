@@ -357,7 +357,7 @@ crate_: lib.makeOverridable
 
 
       configurePhase = configureCrate {
-        inherit crateName crateType buildDependencies completeDeps completeBuildDeps crateDescription
+        inherit crateName buildDependencies completeDeps completeBuildDeps crateDescription
           crateFeatures crateRenames libName build workspace_member release libPath crateVersion crateLinks
           extraLinkFlags extraRustcOptsForBuildRs
           crateLicense crateLicenseFile crateReadme crateRepository crateRustVersion

@@ -2,7 +2,7 @@
 
 let
   variant = if stdenv.hostPlatform.isMusl then "alpine_linux" else "linux";
-  sources = import ./sources.nix;
+  sources = lib.importJSON ./sources.json;
 in
 {
   jdk-hotspot = import ./jdk-linux-base.nix { sourcePerArch = sources.openjdk16.${variant}.jdk.hotspot; knownVulnerabilities = [ "Support ended" ]; };

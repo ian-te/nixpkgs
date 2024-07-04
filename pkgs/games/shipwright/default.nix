@@ -22,7 +22,7 @@
 , libpulseaudio
 , libpng
 , imagemagick
-, zenity
+, gnome
 , makeWrapper
 , darwin
 , libicns
@@ -84,7 +84,7 @@ stdenv.mkDerivation (finalAttrs: {
     libXi
     libXext
     libpulseaudio
-    zenity
+    gnome.zenity
   ] ++ lib.optionals stdenv.isDarwin [
     IOSurface
     Metal
@@ -168,7 +168,7 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   fixupPhase = lib.optionalString stdenv.isLinux ''
-    wrapProgram $out/lib/soh.elf --prefix PATH ":" ${lib.makeBinPath [ zenity ]}
+    wrapProgram $out/lib/soh.elf --prefix PATH ":" ${lib.makeBinPath [ gnome.zenity ]}
   '';
 
   desktopItems = [

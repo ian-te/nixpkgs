@@ -144,7 +144,7 @@ in
 
 , meta ? {}
 
-, doCheck ? true
+, doCheck ? config.doCheckByDefault or false
 
 , disabledTestPaths ? []
 

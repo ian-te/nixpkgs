@@ -3,7 +3,7 @@
   buildPythonPackage,
   pythonOlder,
   fetchFromGitHub,
-  hatchling,
+  poetry-core,
   aiohttp,
   async-timeout,
   yarl,
@@ -14,26 +14,26 @@
 
 buildPythonPackage rec {
   pname = "here-transit";
-  version = "1.2.1";
+  version = "1.2.0";
 
-  disabled = pythonOlder "3.10";
+  disabled = pythonOlder "3.8";
 
-  pyproject = true;
+  format = "pyproject";
 
   src = fetchFromGitHub {
     owner = "eifinger";
     repo = "here_transit";
     rev = "v${version}";
-    hash = "sha256-fORg1iqRcD75Is1EW9XeAu8astibypmnNXo3vHduQdk=";
+    hash = "sha256-C5HZZCmK9ILUUXyx1i/cUggSM3xbOzXiJ13hrT2DWAI=";
   };
 
   postPatch = ''
     sed -i "/^addopts/d" pyproject.toml
   '';
 
-  build-system = [ hatchling ];
+  nativeBuildInputs = [ poetry-core ];
 
-  dependencies = [
+  propagatedBuildInputs = [
     aiohttp
     async-timeout
     yarl
@@ -48,7 +48,7 @@ buildPythonPackage rec {
   pythonImportsCheck = [ "here_transit" ];
 
   meta = {
-    changelog = "https://github.com/eifinger/here_transit/releases/tag/v${version}";
+    changelog = "https://github.com/eifinger/here_transit/blob/${src.rev}/CHANGELOG.md";
     description = "Asynchronous Python client for the HERE Routing V8 API";
     homepage = "https://github.com/eifinger/here_transit";
     license = lib.licenses.mit;

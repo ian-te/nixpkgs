@@ -3,7 +3,6 @@
   buildPythonPackage,
   pythonOlder,
   fetchFromGitHub,
-  fetchpatch,
   hatchling,
   jax,
   jaxlib,
@@ -29,18 +28,9 @@ buildPythonPackage rec {
     hash = "sha256-3OwHND1YEdg/SppqiB7pCdp6v+lYwTbtX07tmyEMWDo=";
   };
 
-  patches = [
-    # TODO: remove when next release (0.11.5) is out
-    (fetchpatch {
-      name = "make-tests-pass-with-jaxtyping-0-2-30";
-      url = "https://github.com/patrick-kidger/equinox/commit/cf942646cddffd32519d876c653d09e064bd66b8.patch";
-      hash = "sha256-q/vbvLhqT4q+BK+q5sPVY5arzXCmH5LWxt4evAwywtM=";
-    })
-  ];
+  nativeBuildInputs = [ hatchling ];
 
-  build-system = [ hatchling ];
-
-  dependencies = [
+  propagatedBuildInputs = [
     jax
     jaxlib
     jaxtyping
@@ -74,11 +64,11 @@ buildPythonPackage rec {
     "test_backward_nan"
   ];
 
-  meta = {
+  meta = with lib; {
     description = "JAX library based around a simple idea: represent parameterised functions (such as neural networks) as PyTrees";
     changelog = "https://github.com/patrick-kidger/equinox/releases/tag/v${version}";
     homepage = "https://github.com/patrick-kidger/equinox";
-    license = lib.licenses.asl20;
-    maintainers = with lib.maintainers; [ GaetanLepage ];
+    license = licenses.asl20;
+    maintainers = with maintainers; [ GaetanLepage ];
   };
 }

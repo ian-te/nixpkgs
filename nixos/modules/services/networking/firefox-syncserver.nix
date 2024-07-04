@@ -316,7 +316,7 @@ in
   };
 
   meta = {
-    maintainers = with lib.maintainers; [ ];
+    maintainers = with lib.maintainers; [ pennae ];
     doc = ./firefox-syncserver.md;
   };
 }

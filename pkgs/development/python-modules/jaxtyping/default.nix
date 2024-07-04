@@ -5,7 +5,9 @@
   fetchFromGitHub,
   hatchling,
   pythonRelaxDepsHook,
+  numpy,
   typeguard,
+  typing-extensions,
   cloudpickle,
   equinox,
   ipython,
@@ -19,7 +21,7 @@
 let
   self = buildPythonPackage rec {
     pname = "jaxtyping";
-    version = "0.2.31";
+    version = "0.2.28";
     pyproject = true;
 
     disabled = pythonOlder "3.9";
@@ -28,16 +30,18 @@ let
       owner = "google";
       repo = "jaxtyping";
       rev = "refs/tags/v${version}";
-      hash = "sha256-kuGFzp8sDLq6J/qq8ap3lD3n1pABHurXcbRUtDQyWwE=";
+      hash = "sha256-xDFrgPecUIfCACg/xkMQ8G1+6hNiUUDg9eCZKNpNfzs=";
     };
 
-    build-system = [
+    nativeBuildInputs = [
       hatchling
       pythonRelaxDepsHook
     ];
 
-    dependencies = [
+    propagatedBuildInputs = [
+      numpy
       typeguard
+      typing-extensions
     ];
 
     pythonRelaxDeps = [ "typeguard" ];
@@ -66,12 +70,11 @@ let
 
     pythonImportsCheck = [ "jaxtyping" ];
 
-    meta = {
+    meta = with lib; {
       description = "Type annotations and runtime checking for JAX arrays and PyTrees";
       homepage = "https://github.com/google/jaxtyping";
-      changelog = "https://github.com/patrick-kidger/jaxtyping/releases/tag/v${version}";
-      license = lib.licenses.mit;
-      maintainers = with lib.maintainers; [ GaetanLepage ];
+      license = licenses.mit;
+      maintainers = with maintainers; [ GaetanLepage ];
     };
   };
 in

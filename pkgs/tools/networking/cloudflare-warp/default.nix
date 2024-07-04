@@ -73,12 +73,6 @@ stdenv.mkDerivation rec {
     substituteInPlace $out/lib/systemd/user/warp-taskbar.service \
       --replace "ExecStart=" "ExecStart=$out"
 
-    cat >>$out/lib/systemd/user/warp-taskbar.service <<EOF
-
-    [Service]
-    BindReadOnlyPaths=$out:/usr:
-    EOF
-
     runHook postInstall
   '';
 

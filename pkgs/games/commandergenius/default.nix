@@ -51,7 +51,7 @@ stdenv.mkDerivation rec {
     '';
     homepage = "https://github.com/gerstrong/Commander-Genius";
     maintainers = with maintainers; [ hce ];
-    license = licenses.gpl2Plus;
+    license = licenses.gpl2;
     platforms = platforms.linux;
   };
 }

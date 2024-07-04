@@ -104,9 +104,6 @@ let
             --what="sleep" \
             --why="Scheduled backup" \
         '' + backupScript;
-      unitConfig = optionalAttrs (isLocalPath cfg.repo) {
-        RequiresMountsFor = [ cfg.repo ];
-      };
       serviceConfig = {
         User = cfg.user;
         Group = cfg.group;

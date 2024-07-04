@@ -14,6 +14,7 @@ bundlerApp {
     platforms       = platforms.darwin;
     maintainers     = with maintainers; [
       peterromfeldhk
+      lilyball
       nicknovitski
     ];
   };

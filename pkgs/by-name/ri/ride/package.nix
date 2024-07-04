@@ -12,7 +12,6 @@
   copyDesktopItems,
   makeDesktopItem,
   electron,
-  darwin,
 }:
 
 let
@@ -32,8 +31,6 @@ let
   };
 
   platformInfo = platformInfos.${stdenv.system};
-
-  electronDist = electron + (if stdenv.isDarwin then "/Applications" else "/libexec/electron");
 in
 buildNpmPackage rec {
   pname = "ride";
@@ -86,20 +83,13 @@ buildNpmPackage rec {
     popd
   '';
 
-  nativeBuildInputs =
-    [
-      zip
-      makeWrapper
-    ]
-    ++ lib.optionals (!stdenv.isDarwin) [ copyDesktopItems ]
-    ++ lib.optionals stdenv.isDarwin [ darwin.cctools ];
+  nativeBuildInputs = [
+    zip
+    makeWrapper
+    copyDesktopItems
+  ];
 
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
-
-  # Fix error: no member named 'aligned_alloc' in the global namespace
-  env.NIX_CFLAGS_COMPILE = lib.optionalString (
-    stdenv.isDarwin && lib.versionOlder stdenv.hostPlatform.darwinSdkVersion "11.0"
-  ) "-D_LIBCPP_HAS_NO_LIBRARY_ALIGNED_ALLOCATION=1";
 
   npmBuildFlags = platformInfo.buildCmd;
 
@@ -107,12 +97,8 @@ buildNpmPackage rec {
   # Here, we create a local cache of electron zip-files, so electron-packager can copy from it
   postConfigure = ''
     mkdir local-cache
-
-    # electron files need to be writable on Darwin
-    cp -r ${electronDist} electron-dist
-    chmod -R u+w electron-dist
-
-    pushd electron-dist
+    cp -r --no-preserve=all ${electron}/libexec/electron electron
+    pushd electron
     zip -qr ../local-cache/electron-v${electron.version}-${platformInfo.zipSuffix}.zip *
     popd
   '';
@@ -120,27 +106,19 @@ buildNpmPackage rec {
   installPhase = ''
     runHook preInstall
 
+    install -Dm644 D.png $out/share/icons/hicolor/64x64/apps/ride.png
+    install -Dm644 D.svg $out/share/icons/hicolor/scalable/apps/ride.svg
+
     pushd _/ride*/*
 
     install -Dm644 ThirdPartyNotices.txt -t $out/share/doc/ride
 
-    ${lib.optionalString (!stdenv.isDarwin) ''
-      install -Dm644 $src/D.png $out/share/icons/hicolor/64x64/apps/ride.png
-      install -Dm644 $src/D.svg $out/share/icons/hicolor/scalable/apps/ride.svg
-
-      mkdir -p $out/share/ride
-      cp -r locales resources{,.pak} $out/share/ride
-      makeWrapper ${lib.getExe electron} $out/bin/ride \
-          --add-flags $out/share/ride/resources/app.asar \
-          --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}" \
-          --inherit-argv0
-    ''}
-
-    ${lib.optionalString stdenv.isDarwin ''
-      mkdir -p $out/Applications
-      cp -r Ride-*.app $out/Applications
-      makeWrapper $out/Applications/Ride-*.app/Contents/MacOS/Ride-* $out/bin/ride
-    ''}
+    mkdir -p $out/share/ride
+    cp -r locales resources{,.pak} $out/share/ride
+    makeWrapper ${lib.getExe electron} $out/bin/ride \
+      --add-flags $out/share/ride/resources/app.asar \
+      --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}" \
+      --inherit-argv0
 
     popd
 
@@ -163,6 +141,7 @@ buildNpmPackage rec {
   ];
 
   meta = {
+    broken = stdenv.isDarwin;
     changelog = "https://github.com/Dyalog/ride/releases/tag/${src.rev}";
     description = "Remote IDE for Dyalog APL";
     homepage = "https://github.com/Dyalog/ride";

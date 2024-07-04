@@ -44,7 +44,7 @@ filterAndCreateOverrides {
     }:
     prevAttrs: {
       buildInputs = prevAttrs.buildInputs ++ [
-        libcublas
+        libcublas.lib
         numactl
         rdma-core
       ];
@@ -66,17 +66,17 @@ filterAndCreateOverrides {
       buildInputs =
         prevAttrs.buildInputs
         # Always depends on this
-        ++ [ libcublas ]
+        ++ [ libcublas.lib ]
         # Dependency from 12.0 and on
-        ++ lib.lists.optionals (cudaAtLeast "12.0") [ libnvjitlink ]
+        ++ lib.lists.optionals (cudaAtLeast "12.0") [ libnvjitlink.lib ]
         # Dependency from 12.1 and on
-        ++ lib.lists.optionals (cudaAtLeast "12.1") [ libcusparse ];
+        ++ lib.lists.optionals (cudaAtLeast "12.1") [ libcusparse.lib ];
 
       brokenConditions = prevAttrs.brokenConditions // {
         "libnvjitlink missing (CUDA >= 12.0)" =
-          !(cudaAtLeast "12.0" -> (libnvjitlink != null && libnvjitlink != null));
+          !(cudaAtLeast "12.0" -> (libnvjitlink != null && libnvjitlink.lib != null));
         "libcusparse missing (CUDA >= 12.1)" =
-          !(cudaAtLeast "12.1" -> (libcusparse != null && libcusparse != null));
+          !(cudaAtLeast "12.1" -> (libcusparse != null && libcusparse.lib != null));
       };
     };
 
@@ -90,16 +90,16 @@ filterAndCreateOverrides {
       buildInputs =
         prevAttrs.buildInputs
         # Dependency from 12.0 and on
-        ++ lib.lists.optionals (cudaAtLeast "12.0") [ libnvjitlink ];
+        ++ lib.lists.optionals (cudaAtLeast "12.0") [ libnvjitlink.lib ];
 
       brokenConditions = prevAttrs.brokenConditions // {
         "libnvjitlink missing (CUDA >= 12.0)" =
-          !(cudaAtLeast "12.0" -> (libnvjitlink != null && libnvjitlink != null));
+          !(cudaAtLeast "12.0" -> (libnvjitlink != null && libnvjitlink.lib != null));
       };
     };
 
   # TODO(@connorbaker): cuda_cudart.dev depends on crt/host_config.h, which is from
-  # (getDev cuda_nvcc). It would be nice to be able to encode that.
+  # cuda_nvcc.dev. It would be nice to be able to encode that.
   cuda_cudart =
     { addDriverRunpath, lib }:
     prevAttrs: {
@@ -166,17 +166,13 @@ filterAndCreateOverrides {
     };
 
   cuda_nvcc =
-    { backendStdenv, setupCudaHook }:
+    {
+      backendStdenv,
+      cuda_cudart,
+      lib,
+      setupCudaHook,
+    }:
     prevAttrs: {
-      # Merge "bin" and "dev" into "out" to avoid circular references
-      outputs = builtins.filter (
-        x:
-        !(builtins.elem x [
-          "dev"
-          "bin"
-        ])
-      ) prevAttrs.outputs;
-
       # Patch the nvcc.profile.
       # Syntax:
       # - `=` for assignment,
@@ -234,7 +230,8 @@ filterAndCreateOverrides {
       };
     };
 
-  cuda_nvprof = { cuda_cupti }: prevAttrs: { buildInputs = prevAttrs.buildInputs ++ [ cuda_cupti ]; };
+  cuda_nvprof =
+    { cuda_cupti }: prevAttrs: { buildInputs = prevAttrs.buildInputs ++ [ cuda_cupti.lib ]; };
 
   cuda_demo_suite =
     {
@@ -248,8 +245,8 @@ filterAndCreateOverrides {
     prevAttrs: {
       buildInputs = prevAttrs.buildInputs ++ [
         freeglut
-        libcufft
-        libcurand
+        libcufft.lib
+        libcurand.lib
         libGLU
         libglvnd
         mesa

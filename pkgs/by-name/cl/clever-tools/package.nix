@@ -8,7 +8,7 @@
 buildNpmPackage rec {
   pname = "clever-tools";
 
-  version = "3.8.1";
+  version = "3.7.0";
 
   nodejs = nodejs_18;
 
@@ -16,10 +16,10 @@ buildNpmPackage rec {
     owner = "CleverCloud";
     repo = "clever-tools";
     rev = version;
-    hash = "sha256-8dxV57uivjcXz6JHttFNvivcIbNRAwZKSvGv/SST81E=";
+    hash = "sha256-Ce7lk+zTbyj3HmtIFui9ZA1FThZEytovrPCrmjMyX38=";
   };
 
-  npmDepsHash = "sha256-2lROdsq3tR4SYxMoTJYY6EyHxudS7p7wOJq+RxE2btk=";
+  npmDepsHash = "sha256-VQXljlIHAE2o10cXQlsyhTvBSp3/ycQOJydQGNMiWuk=";
 
   dontNpmBuild = true;
 

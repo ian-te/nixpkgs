@@ -13,7 +13,7 @@
 , dconf
 , gettext
 , glib
-, gnome-keyring
+, gnome
 , history-service
 , libnotify
 , libphonenumber
@@ -114,7 +114,7 @@ stdenv.mkDerivation (finalAttrs: {
   nativeCheckInputs = [
     dbus-test-runner
     dconf
-    gnome-keyring
+    gnome.gnome-keyring
     telepathy-mission-control
     xvfb-run
   ];

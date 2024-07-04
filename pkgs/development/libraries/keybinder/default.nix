@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, autoconf, automake, libtool, pkg-config, gnome-common
+{ lib, stdenv, fetchFromGitHub, autoconf, automake, libtool, pkg-config, gnome
 , gtk-doc, gtk2, lua, gobject-introspection
 }:
 
@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkg-config autoconf automake gobject-introspection ];
 
   buildInputs = [
-    libtool gnome-common gtk-doc gtk2
+    libtool gnome.gnome-common gtk-doc gtk2
     lua
   ];
 

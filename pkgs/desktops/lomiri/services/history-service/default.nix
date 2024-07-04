@@ -8,7 +8,7 @@
 , dbus
 , dbus-test-runner
 , dconf
-, gnome-keyring
+, gnome
 , libphonenumber
 , libqtdbustest
 , pkg-config
@@ -142,7 +142,7 @@ stdenv.mkDerivation (finalAttrs: {
     dbus
     dbus-test-runner
     dconf
-    gnome-keyring
+    gnome.gnome-keyring
     telepathy-mission-control
     xvfb-run
   ];

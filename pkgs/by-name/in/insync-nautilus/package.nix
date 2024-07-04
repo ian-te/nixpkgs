@@ -3,7 +3,7 @@
   fetchurl,
   lib,
   dpkg,
-  nautilus-python,
+  gnome,
   insync-emblem-icons,
 }:
 
@@ -25,7 +25,7 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [ dpkg ];
 
   buildInputs = [
-    nautilus-python
+    gnome.nautilus-python
     insync-emblem-icons
   ];
 

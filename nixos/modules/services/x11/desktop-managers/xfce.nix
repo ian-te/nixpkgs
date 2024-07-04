@@ -84,8 +84,8 @@ in
       glib # for gsettings
       gtk3.out # gtk-update-icon-cache
 
-      gnome-themes-extra
-      adwaita-icon-theme
+      gnome.gnome-themes-extra
+      gnome.adwaita-icon-theme
       hicolor-icon-theme
       tango-icon-theme
       xfce4-icon-theme

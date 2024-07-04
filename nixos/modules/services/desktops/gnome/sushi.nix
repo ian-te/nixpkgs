@@ -31,9 +31,9 @@
 
   config = lib.mkIf config.services.gnome.sushi.enable {
 
-    environment.systemPackages = [ pkgs.sushi ];
+    environment.systemPackages = [ pkgs.gnome.sushi ];
 
-    services.dbus.packages = [ pkgs.sushi ];
+    services.dbus.packages = [ pkgs.gnome.sushi ];
 
   };
 

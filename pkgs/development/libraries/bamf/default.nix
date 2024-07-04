@@ -2,7 +2,7 @@
 , lib
 , autoreconfHook
 , gitUpdater
-, gnome-common
+, gnome
 , which
 , fetchgit
 , libgtop
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
     autoreconfHook
     dbus
     docbook_xsl
-    gnome-common
+    gnome.gnome-common
     gobject-introspection
     gtk-doc
     pkg-config

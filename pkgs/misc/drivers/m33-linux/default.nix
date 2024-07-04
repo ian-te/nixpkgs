@@ -30,7 +30,7 @@ stdenv.mkDerivation {
     homepage = "https://github.com/donovan6000/M3D-Linux";
     description = "Linux program that can communicate with the Micro 3D printer";
     mainProgram = "m33-linux";
-    license = licenses.gpl2Only;
+    license = licenses.gpl2;
     platforms = platforms.linux;
     maintainers = with maintainers; [ abbradar ];
   };

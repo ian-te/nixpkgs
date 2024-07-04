@@ -4,7 +4,7 @@
   pkg-config,
   lxc,
   buildGo122Module,
-  fetchFromGitHub,
+  fetchurl,
   acl,
   libcap,
   dqlite,
@@ -13,22 +13,21 @@
   udev,
   installShellFiles,
   nixosTests,
-  nix-update-script,
+  gitUpdater,
+  callPackage,
 }:
 
 buildGo122Module rec {
   pname = "lxd-unwrapped-lts";
   # major/minor are used in updateScript to pin to LTS
-  version = "5.21.1";
+  version = "5.21.0";
 
-  src = fetchFromGitHub {
-    owner = "canonical";
-    repo = "lxd";
-    rev = "refs/tags/lxd-${version}";
-    hash = "sha256-6php6dThpyADOY+2PZ38WxK2jPKd61D0OCwTKjAhAUg=";
+  src = fetchurl {
+    url = "https://github.com/canonical/lxd/releases/download/lxd-${version}/lxd-${version}.tar.gz";
+    hash = "sha256-vnh+8Jm4Olg+VdAPpGboLSbChdnwsU84IgyzGe4ltg8=";
   };
 
-  vendorHash = "sha256-iGW2FQjuqANadFuMHa+2VXiUgoU0VFBJYUyh0pMIdWY=";
+  vendorHash = null;
 
   postPatch = ''
     substituteInPlace shared/usbid/load.go \
@@ -88,16 +87,11 @@ buildGo122Module rec {
     installShellCompletion --bash --name lxd ./scripts/bash/lxd-client
   '';
 
-  passthru = {
-    tests.lxd = nixosTests.lxd;
-    tests.lxd-to-incus = nixosTests.incus.lxd-to-incus;
-
-    updateScript = nix-update-script {
-      extraArgs = [
-        "--version-regex"
-        "lxd-(5.21.*)"
-      ];
-    };
+  passthru.tests.lxd = nixosTests.lxd;
+  passthru.tests.lxd-to-incus = nixosTests.incus.lxd-to-incus;
+  passthru.updateScript = gitUpdater {
+    url = "https://github.com/canonical/lxd.git";
+    rev-prefix = "lxd-5.21";
   };
 
   meta = with lib; {

@@ -47,6 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
     license = lib.licenses.cecill-c;
     maintainers = [
       lib.maintainers.AndersonTorres
+      lib.maintainers.lilyinstarlight
     ];
     platforms = lib.platforms.unix;
   };

@@ -14,7 +14,6 @@
 , includes ? []
 , revert ? false
 , postFetch ? ""
-, nativeBuildInputs ? []
 , ...
 }@args:
 let
@@ -30,7 +29,6 @@ in
 lib.throwIfNot (excludes == [] || includes == [])
   "fetchpatch: cannot use excludes and includes simultaneously"
 fetchurl ({
-  nativeBuildInputs = [ patchutils ] ++ nativeBuildInputs;
   postFetch = ''
     tmpfile="$TMPDIR/patch"
 
@@ -50,12 +48,12 @@ fetchurl ({
     set -e
     mv "$tmpfile" "$out"
 
-    lsdiff \
+    "${patchutils}/bin/lsdiff" \
       ${lib.optionalString (relative != null) "-p1 -i ${lib.escapeShellArg relative}/'*'"} \
       "$out" \
     | sort -u | sed -e 's/[*?]/\\&/g' \
     | xargs -I{} \
-      filterdiff \
+      "${patchutils}/bin/filterdiff" \
       --include={} \
       --strip=${toString stripLen} \
       ${lib.optionalString (extraPrefix != null) ''
@@ -72,7 +70,7 @@ fetchurl ({
       exit 1
     fi
 
-    filterdiff \
+    ${patchutils}/bin/filterdiff \
       -p1 \
       ${builtins.toString (builtins.map (x: "-x ${lib.escapeShellArg x}") excludes)} \
       ${builtins.toString (builtins.map (x: "-i ${lib.escapeShellArg x}") includes)} \
@@ -86,10 +84,10 @@ fetchurl ({
       exit 1
     fi
   '' + lib.optionalString revert ''
-    interdiff "$out" /dev/null > "$tmpfile"
+    ${patchutils}/bin/interdiff "$out" /dev/null > "$tmpfile"
     mv "$tmpfile" "$out"
   '' + postFetch;
 } // builtins.removeAttrs args [
   "relative" "stripLen" "decode" "extraPrefix" "excludes" "includes" "revert"
-  "postFetch" "nativeBuildInputs"
+  "postFetch"
 ])

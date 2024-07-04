@@ -200,14 +200,6 @@ in {
         # Tests HTTP-01 verification using Lego's built-in web server
         http01lego.configuration = simpleConfig;
 
-        # account hash generation with default server from <= 23.11
-        http01lego_legacyAccountHash.configuration = lib.mkMerge [
-          simpleConfig
-          {
-            security.acme.defaults.server = lib.mkForce null;
-          }
-        ];
-
         renew.configuration = lib.mkMerge [
           simpleConfig
           {
@@ -432,7 +424,7 @@ in {
       backoff = BackoffTracker()
 
 
-      def switch_to(node, name, allow_fail=False):
+      def switch_to(node, name):
           # On first switch, this will create a symlink to the current system so that we can
           # quickly switch between derivations
           root_specs = "/tmp/specialisation"
@@ -446,14 +438,9 @@ in {
           if rc > 0:
               switcher_path = f"/tmp/specialisation/{name}/bin/switch-to-configuration"
 
-          if not allow_fail:
-            node.succeed(
-                f"{switcher_path} test"
-            )
-          else:
-            node.execute(
-                f"{switcher_path} test"
-            )
+          node.succeed(
+              f"{switcher_path} test"
+          )
 
 
       # Ensures the issuer of our cert matches the chain
@@ -557,7 +544,7 @@ in {
           check_issuer(webserver, "http.example.test", "pebble")
 
       # Perform account hash test
-      with subtest("Assert that account hash didn't unexpectedly change"):
+      with subtest("Assert that account hash didn't unexpected change"):
           hash = webserver.succeed("ls /var/lib/acme/.lego/accounts/")
           print("Account hash: " + hash)
           assert hash.strip() == "d590213ed52603e9128d"
@@ -740,23 +727,5 @@ in {
               webserver.wait_for_unit(f"acme-finished-{test_domain}.target")
               wait_for_server()
               check_connection_key_bits(client, test_domain, "384")
-
-      # Perform http-01 w/ lego test again, but using the pre-24.05 account hashing
-      # (see https://github.com/NixOS/nixpkgs/pull/317257)
-      with subtest("Check account hashing compatibility with pre-24.05 settings"):
-          webserver.succeed("rm -rf /var/lib/acme/.lego/accounts/*")
-          switch_to(webserver, "http01lego_legacyAccountHash", allow_fail=True)
-          # unit is failed, but in a way that this throws no exception:
-          try:
-            webserver.wait_for_unit("acme-finished-http.example.test.target")
-          except Exception:
-            # The unit is allowed – or even expected – to fail due to not being able to
-            # reach the actual letsencrypt server. We only use it for serialising the
-            # test execution, such that the account check is done after the service run
-            # involving the account creation has been executed at least once.
-            pass
-          hash = webserver.succeed("ls /var/lib/acme/.lego/accounts/")
-          print("Account hash: " + hash)
-          assert hash.strip() == "1ccf607d9aa280e9af00"
     '';
 }

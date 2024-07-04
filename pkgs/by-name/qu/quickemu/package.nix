@@ -14,7 +14,7 @@
   pciutils,
   procps,
   python3,
-  qemu_full,
+  qemu,
   socat,
   spice-gtk,
   swtpm,
@@ -42,7 +42,7 @@ let
     pciutils
     procps
     python3
-    qemu_full
+    qemu
     socat
     swtpm
     util-linux
@@ -73,7 +73,6 @@ stdenv.mkDerivation (finalAttrs: {
       -e '/OVMF_CODE_4M.fd/s|ovmfs=(|ovmfs=("${OVMF.firmware}","${OVMF.variables}" |' \
       -e '/cp "''${VARS_IN}" "''${VARS_OUT}"/a chmod +w "''${VARS_OUT}"' \
       -e 's/Icon=.*qemu.svg/Icon=qemu/' \
-      -e 's,\[ -x "\$(command -v smbd)" \],true,' \
       quickemu
   '';
 

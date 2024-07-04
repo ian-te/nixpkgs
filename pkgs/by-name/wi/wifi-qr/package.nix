@@ -2,7 +2,7 @@
 , fetchFromGitHub
 , installShellFiles
 , makeWrapper
-, zenity
+, gnome
 , ncurses
 , networkmanager
 , patsh
@@ -26,7 +26,7 @@ stdenvNoCC.mkDerivation {
   };
 
   buildInputs = [
-    zenity
+    gnome.zenity
     ncurses
     networkmanager
     procps

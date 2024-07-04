@@ -15,7 +15,7 @@
   libpulseaudio,
   libpng,
   imagemagick,
-  zenity,
+  gnome,
   makeWrapper,
   imgui,
   stormlib,
@@ -122,7 +122,7 @@ stdenv.mkDerivation (finalAttrs: {
     SDL2
     libpulseaudio
     libpng
-    zenity
+    gnome.zenity
     imgui'
     stormlib'
     libzip
@@ -183,7 +183,7 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   fixupPhase = ''
-    wrapProgram $out/2s2h/2s2h.elf --prefix PATH ":" ${lib.makeBinPath [ zenity ]}
+    wrapProgram $out/2s2h/2s2h.elf --prefix PATH ":" ${lib.makeBinPath [ gnome.zenity ]}
   '';
 
   desktopItems = [

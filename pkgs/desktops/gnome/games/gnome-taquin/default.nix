@@ -4,7 +4,6 @@
 , fetchpatch
 , pkg-config
 , gnome
-, adwaita-icon-theme
 , gtk3
 , wrapGAppsHook3
 , librsvg
@@ -56,7 +55,7 @@ stdenv.mkDerivation rec {
     gtk3
     librsvg
     gsound
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
   ];
 
   passthru = {

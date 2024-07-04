@@ -10,7 +10,7 @@ in
 {
   ###### interface
 
-  meta.maintainers = with maintainers; [ philandstuff rawkode ];
+  meta.maintainers = with maintainers; [ philandstuff rawkode jwoudenberg ];
 
   options = {
 

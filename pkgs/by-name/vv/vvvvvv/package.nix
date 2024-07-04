@@ -92,7 +92,7 @@ stdenv.mkDerivation rec {
     '';
     homepage = "https://thelettervsixtim.es";
     license = licenses.unfree;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ martfont ];
     platforms = platforms.unix;
   };
 }

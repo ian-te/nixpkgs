@@ -45,11 +45,11 @@ backendStdenv.mkDerivation (finalAttrs: {
     [ nccl ]
     ++ lib.optionals (lib.versionOlder cudaVersion "11.4") [ cudatoolkit ]
     ++ lib.optionals (lib.versionAtLeast cudaVersion "11.4") [
-      cuda_nvcc # crt/host_config.h
+      cuda_nvcc.dev # crt/host_config.h
       cuda_cudart
     ]
     ++ lib.optionals (lib.versionAtLeast cudaVersion "12.0") [
-      cuda_cccl # <nv/target>
+      cuda_cccl.dev # <nv/target>
     ]
     ++ lib.optionals mpiSupport [ mpi ];
 

@@ -27,7 +27,7 @@ python3.pkgs.buildPythonApplication {
   meta = with lib; {
     homepage = "https://gitea.alexisvl.rocks/alexisvl/lerpn";
     description = "Curses RPN calculator written in straight Python";
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ ckie ];
     license = licenses.gpl3Plus;
     mainProgram = "lerpn";
   };

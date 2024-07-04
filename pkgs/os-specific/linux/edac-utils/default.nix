@@ -1,44 +1,32 @@
-{ lib, stdenv, fetchFromGitHub, perl
+{ lib, stdenv, fetchFromGitHub, perl, makeWrapper
 , sysfsutils, dmidecode, kmod }:
 
 stdenv.mkDerivation {
   pname = "edac-utils";
-  version = "unstable-2023-01-30";
+  version = "unstable-2015-01-07";
 
   src = fetchFromGitHub {
     owner = "grondo";
     repo = "edac-utils";
-    rev = "8fdc1d40e30f65737fef6c3ddcd1d2cd769f6277";
-    hash = "sha256-jZGRrZ1sa4x0/TBJ5GsNVuWakmPNOU+oiOoXdhARunk=";
+    rev = "f9aa96205f610de39a79ff43c7478b7ef02e3138";
+    sha256 = "1dmfqb15ffldl5zirbmwiqzpxbcc2ny9rpfvxcfvpmh5b69knvdg";
   };
 
-  # Hard-code program paths instead of using PATH lookups. Also, labels.d and
-  # mainboard are for user-configurable data, so do not look for them in Nix
-  # store.
-  dmidecodeProgram = lib.getExe' dmidecode "dmidecode";
-  modprobeProgram = lib.getExe' kmod "modprobe";
-  postPatch = ''
-    substituteInPlace src/util/edac-ctl.in \
-      --replace-fail 'find_prog ("dmidecode")' "\"$dmidecodeProgram\"" \
-      --replace-fail 'find_prog ("modprobe")  or exit (1)' "\"$modprobeProgram\"" \
-      --replace-fail '"$sysconfdir/edac/labels.d"' '"/etc/edac/labels.d"' \
-      --replace-fail '"$sysconfdir/edac/mainboard"' '"/etc/edac/mainboard"'
-  '';
+  nativeBuildInputs = [ perl makeWrapper ];
+  buildInputs = [ sysfsutils ];
 
-  # NB edac-utils needs Perl for configure script, but also edac-ctl program is
-  # a Perl script. Perl from buildInputs is used by patchShebangsAuto in
-  # fixupPhase to update the hash bang line.
-  strictDeps = true;
-  nativeBuildInputs = [ perl ];
-  buildInputs = [ perl sysfsutils ];
-
-  installFlags = [
-    "sbindir=${placeholder "out"}/bin"
+  configureFlags = [
+    "--sysconfdir=/etc"
+    "--localstatedir=/var"
   ];
 
-  # SysV init script is not relevant.
+  installFlags = [
+    "sysconfdir=\${out}/etc"
+  ];
+
   postInstall = ''
-    rm -r "$out"/etc/init.d
+    wrapProgram "$out/sbin/edac-ctl" \
+      --set PATH ${lib.makeBinPath [ dmidecode kmod ]}
   '';
 
   meta = with lib; {

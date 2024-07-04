@@ -1,26 +1,25 @@
 { lib
 , buildGoModule
 , fetchFromGitHub
-, stdenv
 , nix-update-script
 }:
 
 buildGoModule rec {
   pname = "sshesame";
-  version = "0.0.35";
+  version = "0.0.27";
 
   src = fetchFromGitHub {
     owner = "jaksi";
     repo = "sshesame";
     rev = "v${version}";
-    hash = "sha256-D+vygu+Zx/p/UmqOXqx/4zGv6mtCUKTeU5HdBhxdbN4=";
+    hash = "sha256-pDLCOyjvbHM8Cw1AIt7+qTbCmH0tGSmwaTBz5pQ05bc=";
   };
 
-  vendorHash = "sha256-WX3rgv9xz3lisYSjf7xvx4oukDSuxE1yqLl6Sz/iDYc=";
+  vendorHash = "sha256-iaINGWpj2gHfwsIOEp5PwlFBohXX591+/FBGyu656qI=";
 
   ldflags = [ "-s" "-w" ];
 
-  hardeningEnable = lib.optionals (!stdenv.isDarwin) [ "pie" ];
+  hardeningEnable = [ "pie" ];
 
   passthru.updateScript = nix-update-script { };
 

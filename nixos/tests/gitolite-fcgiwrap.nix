@@ -24,12 +24,7 @@ import ./make-test-python.nix (
               {
                 networking.firewall.allowedTCPPorts = [ 80 ];
 
-                services.fcgiwrap.gitolite = {
-                  process.user = "gitolite";
-                  process.group = "gitolite";
-                  socket = { inherit (config.services.nginx) user group; };
-                };
-
+                services.fcgiwrap.enable = true;
                 services.gitolite = {
                   enable = true;
                   adminPubkey = adminPublicKey;
@@ -64,7 +59,7 @@ import ./make-test-python.nix (
                     fastcgi_param SCRIPT_FILENAME ${pkgs.gitolite}/bin/gitolite-shell;
 
                     # use Unix domain socket or inet socket
-                    fastcgi_pass unix:${config.services.fcgiwrap.gitolite.socket.address};
+                    fastcgi_pass unix:/run/fcgiwrap.sock;
                   '';
                 };
 
@@ -87,7 +82,7 @@ import ./make-test-python.nix (
 
           server.wait_for_unit("gitolite-init.service")
           server.wait_for_unit("nginx.service")
-          server.wait_for_file("/run/fcgiwrap-gitolite.sock")
+          server.wait_for_file("/run/fcgiwrap.sock")
 
           client.wait_for_unit("multi-user.target")
           client.succeed(

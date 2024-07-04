@@ -49,7 +49,7 @@ tcl.mkTclDerivation rec {
     description = "Chess database with play and training functionality";
     maintainers = with lib.maintainers; [ agbrooks ];
     homepage = "https://scid.sourceforge.net/";
-    license = lib.licenses.gpl2Only;
+    license = lib.licenses.gpl2;
     platforms = lib.platforms.all;
   };
 }

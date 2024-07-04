@@ -20,8 +20,6 @@ let
     desktopName = "Ghidra";
     genericName = "Ghidra Software Reverse Engineering Suite";
     categories = [ "Development" ];
-    terminal = false;
-    startupWMClass = "ghidra-Ghidra";
   };
 
 in stdenv.mkDerivation rec {

@@ -1,23 +1,18 @@
 {
   lib,
-  buildPythonPackage,
+  stdenv,
   fetchFromGitHub,
   cmake,
   ninja,
+  python,
   scikit-build,
   pytest,
   numpy,
 }:
 
-buildPythonPackage rec {
+stdenv.mkDerivation rec {
   pname = "segyio";
   version = "1.9.12";
-  pyproject = false; # Built with cmake
-
-  patches = [
-    # https://github.com/equinor/segyio/pull/570
-    ./add_missing_cstdint.patch
-  ];
 
   postPatch = ''
     # Removing unecessary build dependency
@@ -39,6 +34,7 @@ buildPythonPackage rec {
   nativeBuildInputs = [
     cmake
     ninja
+    python
     scikit-build
   ];
 

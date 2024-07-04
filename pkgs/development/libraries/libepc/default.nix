@@ -2,7 +2,6 @@
 , lib
 , fetchurl
 , autoreconfHook
-, gnome-common
 , pkg-config
 , intltool
 , gtk-doc
@@ -33,7 +32,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [
     autoreconfHook
-    gnome-common
+    gnome.gnome-common
     pkg-config
     intltool
     gtk-doc

@@ -2,6 +2,9 @@
   lib,
   stdenv,
   stdenvNoCC,
+  stdenvNoLibs,
+  overrideCC,
+  buildPackages,
   versionData,
   writeText,
   patches,
@@ -21,7 +24,15 @@
 lib.makeOverridable (
   attrs:
   let
-    stdenv' = if attrs.noCC or false then stdenvNoCC else stdenv;
+    stdenv' =
+      if attrs.noCC or false then
+        stdenvNoCC
+      else if attrs.noLibc or false then
+        stdenvNoLibs
+      else if attrs.noLibcxx or false then
+        overrideCC stdenv buildPackages.llvmPackages.clangNoLibcxx
+      else
+        stdenv;
   in
   stdenv'.mkDerivation (
     rec {
@@ -106,10 +117,61 @@ lib.makeOverridable (
     }
     // {
       patches =
-        (lib.optionals (attrs.autoPickPatches or true) (
-          freebsd-lib.filterPatches patches (attrs.extraPaths or [ ] ++ [ attrs.path ])
-        ))
-        ++ attrs.patches or [ ];
+        let
+          isDir =
+            file:
+            let
+              base = baseNameOf file;
+              type = (builtins.readDir (dirOf file)).${base} or null;
+            in
+            file == /. || type == "directory";
+          consolidatePatches =
+            patches:
+            if (lib.isDerivation patches) then
+              [ patches ]
+            else if (builtins.isPath patches) then
+              (if (isDir patches) then (lib.filesystem.listFilesRecursive patches) else [ patches ])
+            else if (builtins.isList patches) then
+              (lib.flatten (builtins.map consolidatePatches patches))
+            else
+              throw "Bad patches - must be path or derivation or list thereof";
+          consolidated = consolidatePatches patches;
+          splitPatch =
+            patchFile:
+            let
+              allLines' = lib.strings.splitString "\n" (builtins.readFile patchFile);
+              allLines = builtins.filter (
+                line: !((lib.strings.hasPrefix "diff --git" line) || (lib.strings.hasPrefix "index " line))
+              ) allLines';
+              foldFunc =
+                a: b:
+                if ((lib.strings.hasPrefix "--- " b) || (lib.strings.hasPrefix "diff --git " b)) then
+                  (a ++ [ [ b ] ])
+                else
+                  ((lib.lists.init a) ++ (lib.lists.singleton ((lib.lists.last a) ++ [ b ])));
+              partitionedPatches' = lib.lists.foldl foldFunc [ [ ] ] allLines;
+              partitionedPatches =
+                if (builtins.length partitionedPatches' > 1) then
+                  (lib.lists.drop 1 partitionedPatches')
+                else
+                  (throw "${patchFile} does not seem to be a unified patch (diff -u). this is required for FreeBSD.");
+              filterFunc =
+                patchLines:
+                let
+                  prefixedPath = builtins.elemAt (builtins.split " |\t" (builtins.elemAt patchLines 1)) 2;
+                  unfixedPath = lib.path.subpath.join (lib.lists.drop 1 (lib.path.subpath.components prefixedPath));
+                in
+                lib.lists.any (included: lib.path.hasPrefix (/. + ("/" + included)) (/. + ("/" + unfixedPath))) (
+                  (attrs.extraPaths or [ ]) ++ [ attrs.path ]
+                );
+              filteredLines = builtins.filter filterFunc partitionedPatches;
+              derive = patchLines: writeText "freebsd-patch" (lib.concatLines patchLines);
+              derivedPatches = builtins.map derive filteredLines;
+            in
+            derivedPatches;
+          picked = lib.lists.concatMap splitPatch consolidated;
+        in
+        picked ++ attrs.patches or [ ];
     }
   )
 )

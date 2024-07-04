@@ -32,7 +32,7 @@ stdenv.mkDerivation (finalAttrs: {
     description = "Single-player roguelike dungeon exploration game";
     mainProgram = "angband";
     maintainers = [ maintainers.kenran ];
-    license = licenses.gpl2Only;
+    license = licenses.gpl2;
     platforms = platforms.unix;
   };
 })

@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
 
       Refer to the description of epson-escpr for usage.
     '';
-    license = licenses.gpl2Plus;
+    license = licenses.gpl2;
     maintainers = with maintainers; [ ma9e ma27 shawn8901 ];
     platforms = platforms.linux;
   };

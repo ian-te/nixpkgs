@@ -56,7 +56,7 @@ stdenv.mkDerivation rec {
            Lenovo M7605D
       '';
     homepage = "https://github.com/pdewacht/brlaser";
-    license = licenses.gpl2Plus;
+    license = licenses.gpl2;
     platforms = platforms.linux;
     maintainers = with maintainers; [ StijnDW ];
   };

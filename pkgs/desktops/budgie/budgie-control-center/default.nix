@@ -3,9 +3,7 @@
 , fetchFromGitHub
 , substituteAll
 , accountsservice
-, adwaita-icon-theme
 , budgie-desktop
-, cheese
 , clutter
 , clutter-gtk
 , colord
@@ -21,7 +19,6 @@
 , glibc
 , gnome
 , gnome-desktop
-, gnome-user-share
 , gsettings-desktop-schemas
 , gsound
 , gtk3
@@ -104,12 +101,12 @@ stdenv.mkDerivation (finalAttrs: {
     glib
     glib-networking
     gnome-desktop
-    adwaita-icon-theme
-    cheese
+    gnome.adwaita-icon-theme
+    gnome.cheese
     gnome.gnome-bluetooth_1_0
     gnome.gnome-remote-desktop
     gnome.gnome-settings-daemon
-    gnome-user-share
+    gnome.gnome-user-share
     gnome.mutter
     gsettings-desktop-schemas
     gsound

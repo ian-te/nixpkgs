@@ -58,10 +58,6 @@ stdenv.mkDerivation rec {
     popd
   '';
 
-  configureFlags = [
-    "--localstatedir=/var"
-  ];
-
   enableParallelBuilding = true;
 
   # disable tests due to networking issues and because individual tests can't be skipped easily

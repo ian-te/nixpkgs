@@ -6,7 +6,7 @@
 , electron_29
 , fetchFromGitHub
 , glib
-, gnome-keyring
+, gnome
 , gtk3
 , jq
 , libsecret
@@ -127,7 +127,7 @@ in buildNpmPackage rec {
 
   nativeCheckInputs = [
     dbus
-    (gnome-keyring.override { useWrappedDaemon = false; })
+    (gnome.gnome-keyring.override { useWrappedDaemon = false; })
   ];
 
   checkFlags = [

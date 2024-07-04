@@ -2,11 +2,10 @@
 # cfg.configFile contains secrets such as proxy servers' credential!
 # we dont want plaintext secrets in world-readable `/nix/store`.
 
-{
-  lib,
-  config,
-  pkgs,
-  ...
+{ lib
+, config
+, pkgs
+, ...
 }:
 let
   cfg = config.services.mihomo;
@@ -18,6 +17,7 @@ in
     package = lib.mkPackageOption pkgs "mihomo" { };
 
     configFile = lib.mkOption {
+      default = null;
       type = lib.types.nullOr lib.types.path;
       description = "Configuration file to use.";
     };
@@ -67,7 +67,7 @@ in
           ExecStart = lib.concatStringsSep " " [
             (lib.getExe cfg.package)
             "-d /var/lib/private/mihomo"
-            "-f \${CREDENTIALS_DIRECTORY}/config.yaml"
+            (lib.optionalString (cfg.configFile != null) "-f \${CREDENTIALS_DIRECTORY}/config.yaml")
             (lib.optionalString (cfg.webui != null) "-ext-ui ${cfg.webui}")
             (lib.optionalString (cfg.extraOpts != null) cfg.extraOpts)
           ];

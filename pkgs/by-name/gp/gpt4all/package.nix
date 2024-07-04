@@ -47,9 +47,12 @@ stdenv.mkDerivation (finalAttrs: {
   ] ++ lib.optionals cudaSupport (
       with cudaPackages;
       [
-        cuda_cccl
-        cuda_cudart
-        libcublas
+        cuda_cccl.dev
+        cuda_cudart.dev
+        cuda_cudart.lib
+        cuda_cudart.static
+        libcublas.dev
+        libcublas.lib
       ]);
 
   cmakeFlags = [

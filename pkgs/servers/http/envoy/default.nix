@@ -184,8 +184,6 @@ buildBazelPackage {
     "--repo_env=GOSUMDB=sum.golang.org"
   ];
 
-  requiredSystemFeatures = [ "big-parallel" ];
-
   passthru.tests = {
     envoy = nixosTests.envoy;
     # tested as a core component of Pomerium

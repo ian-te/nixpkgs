@@ -10,7 +10,6 @@
 , gobject-introspection
 , gtk4
 , pango
-, overrideSDK
 , pkg-config
 , rustPlatform
 , testers
@@ -29,12 +28,8 @@ let
     hash = "sha256-SOWtLmehh1F8SoDQ+9d7Fyosgzya5ZztCv8IcJZ4J94=";
   };
   cargoHash = "sha256-GOX7V6NLEMP06nMeRZINwcWCaHwK6T3nkRKl4e25DPg=";
-
-  buildRustPackage' = rustPlatform.buildRustPackage.override {
-    stdenv = if stdenv.isDarwin then overrideSDK stdenv "11.0" else stdenv;
-  };
 in
-buildRustPackage' {
+rustPlatform.buildRustPackage {
   inherit pname version src cargoHash;
 
   nativeBuildInputs = [

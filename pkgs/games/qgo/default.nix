@@ -27,7 +27,7 @@ mkDerivation {
       Chinese, "囲碁(Yi Go)" in Japanese, "바둑(Baduk)" in Korean.
     '';
     homepage = "https://github.com/pzorin/qgo";
-    license = licenses.gpl2Plus;
+    license = licenses.gpl2;
     maintainers = with maintainers; [ zalakain ];
   };
 

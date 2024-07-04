@@ -10,7 +10,7 @@
   gsettings-desktop-schemas,
   wrapGAppsHook3,
   gtk-layer-shell,
-  adwaita-icon-theme,
+  gnome,
   libxkbcommon,
   openssl,
   pkg-config,
@@ -48,7 +48,7 @@ rustPlatform.buildRustPackage rec {
       gtk-layer-shell
       glib-networking
       shared-mime-info
-      adwaita-icon-theme
+      gnome.adwaita-icon-theme
       hicolor-icon-theme
       gsettings-desktop-schemas
       libxkbcommon

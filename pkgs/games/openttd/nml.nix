@@ -24,7 +24,7 @@ python3.pkgs.buildPythonApplication rec {
     homepage = "http://openttdcoop.org/";
     description = "Compiler for OpenTTD NML files";
     mainProgram = "nmlc";
-    license = licenses.gpl2Plus;
+    license = licenses.gpl2;
     maintainers = with maintainers; [ ToxicFrog ];
   };
 }

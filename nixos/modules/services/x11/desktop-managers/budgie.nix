@@ -61,7 +61,7 @@ in {
         '';
         type = types.listOf types.package;
         default = [];
-        example = literalExpression "[ pkgs.gpaste ]";
+        example = literalExpression "[ pkgs.gnome.gpaste ]";
       };
 
       extraGSettingsOverrides = mkOption {
@@ -132,7 +132,7 @@ in {
         gnome-menus
 
         # Required by Budgie Control Center.
-        zenity
+        gnome.zenity
 
         # Provides `gsettings`.
         glib
@@ -162,7 +162,7 @@ in {
       ++ cfg.sessionPath;
 
     # Both budgie-desktop-view and nemo defaults to this emulator.
-    programs.gnome-terminal.enable = mkDefault (notExcluded pkgs.gnome-terminal);
+    programs.gnome-terminal.enable = mkDefault (notExcluded pkgs.gnome.gnome-terminal);
 
     # Fonts.
     fonts.packages = [

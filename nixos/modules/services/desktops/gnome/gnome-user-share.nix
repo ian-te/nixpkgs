@@ -26,11 +26,11 @@
   config = lib.mkIf config.services.gnome.gnome-user-share.enable {
 
     environment.systemPackages = [
-      pkgs.gnome-user-share
+      pkgs.gnome.gnome-user-share
     ];
 
     systemd.packages = [
-      pkgs.gnome-user-share
+      pkgs.gnome.gnome-user-share
     ];
 
   };

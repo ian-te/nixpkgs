@@ -5,7 +5,7 @@
 , librsvg
 , gtk-engine-murrine
 , gtk3
-, adwaita-icon-theme
+, gnome
 , gnome-icon-theme
 , numix-icon-theme-circle
 , hicolor-icon-theme
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
   ];
 
   propagatedBuildInputs = [
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     gnome-icon-theme
     numix-icon-theme-circle
     hicolor-icon-theme

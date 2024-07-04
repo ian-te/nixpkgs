@@ -19,13 +19,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "lxc";
-  version = "6.0.1";
+  version = "6.0.0";
 
   src = fetchFromGitHub {
     owner = "lxc";
     repo = "lxc";
     rev = "refs/tags/v${finalAttrs.version}";
-    hash = "sha256-fJMNdMXlV1z9q1pMDh046tNmLDuK6zh6uPahTWzWMvc=";
+    hash = "sha256-D994gekFgW/1Q4iVFM/3Zi0JXKn9Ghfd3UcjckVfoFY=";
   };
 
   nativeBuildInputs = [
@@ -48,14 +48,17 @@ stdenv.mkDerivation (finalAttrs: {
   patches = [
     # fix docbook2man version detection
     ./docbook-hack.patch
+
+    # fix linking
+    ./4428.diff
   ];
 
   mesonFlags = [
     "-Dinstall-init-files=false"
     "-Dinstall-state-dirs=false"
     "-Dspecfile=false"
-    "-Dtools-multicall=true"
-    "-Dtools=false"
+    # re-enable when fixed https://github.com/lxc/lxc/issues/4427
+    # "-Dtools-multicall=true"
   ];
 
   enableParallelBuilding = true;

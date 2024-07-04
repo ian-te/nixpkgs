@@ -134,15 +134,19 @@ stdenv.mkDerivation {
     blas
     python3
   ] ++ lists.optionals cudaSupport (with effectiveCudaPackages; [
-    cuda_cudart # cuda_runtime.h
-    libcublas # cublas_v2.h
-    libcusparse # cusparse.h
+    cuda_cudart.dev # cuda_runtime.h
+    cuda_cudart.lib # cudart
+    cuda_cudart.static # cudart_static
+    libcublas.dev # cublas_v2.h
+    libcublas.lib # cublas
+    libcusparse.dev # cusparse.h
+    libcusparse.lib # cusparse
   ] ++ lists.optionals (cudaOlder "11.8") [
-    cuda_nvprof # <cuda_profiler_api.h>
+    cuda_nvprof.dev # <cuda_profiler_api.h>
   ] ++ lists.optionals (cudaAtLeast "11.8") [
-    cuda_profiler_api # <cuda_profiler_api.h>
+    cuda_profiler_api.dev # <cuda_profiler_api.h>
   ] ++ lists.optionals (cudaAtLeast "12.0") [
-    cuda_cccl # <nv/target>
+    cuda_cccl.dev # <nv/target>
   ]) ++ lists.optionals rocmSupport [
     rocmPackages.clr
     rocmPackages.hipblas

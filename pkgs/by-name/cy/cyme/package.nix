@@ -6,6 +6,7 @@
 , stdenv
 , darwin
 , libusb1
+, udev
 , nix-update-script
 , testers
 , cyme
@@ -13,16 +14,21 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "cyme";
-  version = "1.7.0";
+  version = "1.6.1";
 
   src = fetchFromGitHub {
     owner = "tuna-f1sh";
     repo = "cyme";
     rev = "v${version}";
-    hash = "sha256-iDwH4gSpt1XkwMBj0Ut26c9PpsHcxFrRE6VuBNhpIHk=";
+    hash = "sha256-HIOrdVChTfYX8AKqytWU+EudFDiqoVELb+yL3jsPQwM=";
   };
 
-  cargoHash = "sha256-bzOqk0nXhqq4WX9razPo1q6BkEl4VZ5QMPiNEwHO/eM=";
+  cargoLock = {
+    lockFile = ./Cargo.lock;
+    outputHashes = {
+      "libudev-sys-0.1.4" = "sha256-7dUqPH8bQ/QSBIppxQbymwQ44Bvi1b6N2AMUylbyKK8=";
+    };
+  };
 
   nativeBuildInputs = [
     pkg-config
@@ -32,12 +38,11 @@ rustPlatform.buildRustPackage rec {
 
   buildInputs = [
     libusb1
+  ] ++ lib.optionals stdenv.isLinux [
+    udev
   ];
 
-  checkFlags = [
-    # doctest that requires access outside sandbox
-    "--skip=udev::hwdb::get"
-  ] ++ lib.optionals stdenv.isDarwin [
+  checkFlags = lib.optionals stdenv.isDarwin [
     # system_profiler is not available in the sandbox
     "--skip=test_run"
   ];

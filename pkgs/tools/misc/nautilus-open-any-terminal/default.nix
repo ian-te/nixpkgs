@@ -4,8 +4,7 @@
 , dconf
 , fetchFromGitHub
 , glib
-, nautilus
-, nautilus-python
+, gnome
 , gobject-introspection
 , gsettings-desktop-schemas
 , gtk3
@@ -38,8 +37,8 @@ python3.pkgs.buildPythonPackage rec {
   buildInputs = [
     dbus
     dconf
-    nautilus
-    nautilus-python
+    gnome.nautilus
+    gnome.nautilus-python
     gsettings-desktop-schemas
     gtk3
     python3.pkgs.pygobject3

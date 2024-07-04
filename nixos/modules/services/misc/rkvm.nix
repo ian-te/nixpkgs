@@ -7,7 +7,7 @@ let
   toml = pkgs.formats.toml { };
 in
 {
-  meta.maintainers = with maintainers; [ ];
+  meta.maintainers = with maintainers; [ ckie ];
 
   options.services.rkvm = {
     enable = mkOption {

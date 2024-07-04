@@ -2,20 +2,23 @@
   lib,
   buildPythonPackage,
   fetchPypi,
+  mock,
   pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "schedule";
-  version = "1.2.2";
+  version = "1.2.1";
   format = "setuptools";
 
   disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-Ff6cdf5f2blifz8ZzA7xQgUI+fmkb0XNB2nvde3l8Lc=";
+    hash = "sha256-hDvAU4uZyT8CuLUOPjmIbAby0AOyT0jhqkyt+j80Enk=";
   };
+
+  buildInputs = [ mock ];
 
   preCheck = ''
     # https://github.com/dbader/schedule/issues/488

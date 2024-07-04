@@ -54,7 +54,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     '';
     license = lib.licenses.asl20;
     mainProgram = "mvn";
-    maintainers = with lib.maintainers; [ ];
+    maintainers = with lib.maintainers; [ cko ];
     inherit (jdk.meta) platforms;
   };
 })

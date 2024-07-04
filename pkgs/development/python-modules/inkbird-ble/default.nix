@@ -13,7 +13,7 @@
 
 buildPythonPackage rec {
   pname = "inkbird-ble";
-  version = "0.5.7";
+  version = "0.5.6";
   format = "pyproject";
 
   disabled = pythonOlder "3.9";
@@ -22,7 +22,7 @@ buildPythonPackage rec {
     owner = "Bluetooth-Devices";
     repo = pname;
     rev = "refs/tags/v${version}";
-    hash = "sha256-JmhYYoKz3w3H/WSkJFXrNAsJOmGr+Ex3LGNmgdQgr3s=";
+    hash = "sha256-re5HjPtssFkpcltCr0HEJmJyHbXJdkr2wDgaAHfy2Tk=";
   };
 
   nativeBuildInputs = [ poetry-core ];
