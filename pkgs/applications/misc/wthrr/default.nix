@@ -9,16 +9,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "wthrr";
-  version = "1.2.0";
+  version = "1.1.1";
 
   src = fetchFromGitHub {
-    owner = "ttytm";
+    owner = "tobealive";
     repo = "wthrr-the-weathercrab";
     rev = "v${version}";
-    hash = "sha256-3bWO2Gl8/B2p4k/6QhlT46RvyMJJs7WkVcX35vWN2Fk=";
+    hash = "sha256-djrPBmXnUC8d6lWuiHyYY2so8/5RHLFYDu6xoHn6GRg=";
   };
 
-  cargoHash = "sha256-8Uy+8UpCQyLaLsulpgC1w2XI9aqj2P5ebBlXqpuDIc4=";
+  cargoHash = "sha256-PGbkGoWcFlTKpnrvMzrHvjFLIuohqEhVg4DYhAZOpkw=";
 
   nativeBuildInputs = [
     pkg-config
@@ -29,7 +29,6 @@ rustPlatform.buildRustPackage rec {
   ] ++ lib.optionals stdenv.isDarwin [
     darwin.apple_sdk.frameworks.CoreFoundation
     darwin.apple_sdk.frameworks.Security
-    darwin.apple_sdk.frameworks.SystemConfiguration
   ];
 
   checkFlags = [
@@ -40,8 +39,8 @@ rustPlatform.buildRustPackage rec {
 
   meta = with lib; {
     description = "Weather companion for the terminal";
-    homepage = "https://github.com/ttytm/wthrr-the-weathercrab";
-    changelog = "https://github.com/ttytm/wthrr-the-weathercrab/releases/tag/${src.rev}";
+    homepage = "https://github.com/tobealive/wthrr-the-weathercrab";
+    changelog = "https://github.com/tobealive/wthrr-the-weathercrab/releases/tag/${src.rev}";
     license = licenses.mit;
     maintainers = with maintainers; [ figsoda ];
     mainProgram = "wthrr";

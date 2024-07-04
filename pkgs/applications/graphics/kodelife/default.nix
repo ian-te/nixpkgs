@@ -19,7 +19,7 @@
 , libXrender
 , libXxf86vm
 , libglvnd
-, zenity
+, gnome
 }:
 
 let
@@ -39,7 +39,7 @@ let
   ];
 
   runBinDeps = [
-    zenity
+    gnome.zenity
   ];
 in
 
@@ -100,7 +100,7 @@ stdenv.mkDerivation rec {
     description = "Real-time GPU shader editor";
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.unfree;
-    maintainers = with maintainers; [ prusnak ];
+    maintainers = with maintainers; [ prusnak lilyinstarlight ];
     platforms = [ "aarch64-linux" "armv7l-linux" "x86_64-linux" ];
     mainProgram = "KodeLife";
   };

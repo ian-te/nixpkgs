@@ -6,7 +6,7 @@
 , gettext
 , maxima
 , wxGTK
-, adwaita-icon-theme
+, gnome
 , glib
 }:
 
@@ -25,7 +25,7 @@ stdenv.mkDerivation (finalAttrs:{
     wxGTK
     maxima
     # So it won't embed svg files into headers.
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     # So it won't crash under Sway.
     glib
   ];

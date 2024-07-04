@@ -18,7 +18,7 @@
 , libXrender
 , libXxf86vm
 , libglvnd
-, zenity
+, gnome
 }:
 
 let
@@ -39,7 +39,7 @@ let
   ];
 
   runBinDeps = [
-    zenity
+    gnome.zenity
   ];
 in
 
@@ -101,7 +101,7 @@ stdenv.mkDerivation rec {
     description = "Next generation modular control surface";
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.unfree;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ lilyinstarlight ];
     platforms = [ "aarch64-linux" "armv7l-linux" "x86_64-linux" ];
     mainProgram = "TouchOSC";
   };

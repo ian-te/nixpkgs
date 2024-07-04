@@ -1,6 +1,6 @@
 { lib, stdenv, fetchFromGitHub
 , cmake, wrapGAppsHook3
-, libX11, libzip, glfw, libpng, xorg, zenity
+, libX11, libzip, glfw, libpng, xorg, gnome
 }:
 
 stdenv.mkDerivation rec {
@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
   postInstall = ''
     wrapProgram $out/bin/tev \
       "''${gappsWrapperArgs[@]}" \
-      --prefix PATH ":" "${zenity}/bin"
+      --prefix PATH ":" "${gnome.zenity}/bin"
   '';
 
   env.CXXFLAGS = "-include cstdint";

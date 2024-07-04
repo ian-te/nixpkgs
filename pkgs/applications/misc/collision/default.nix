@@ -5,7 +5,7 @@
 , wrapGAppsHook4
 , desktopToDarwinBundle
 , gobject-introspection
-, nautilus-python
+, gnome
 , python3
 , libadwaita
 , openssl
@@ -54,7 +54,7 @@ crystal.buildCrystalPackage rec {
     libadwaita
     openssl
     libxml2
-    nautilus-python
+    gnome.nautilus-python
     python3.pkgs.pygobject3
   ];
 

@@ -3,7 +3,7 @@
 , fetchFromGitHub
 , ghostscript
 , locale
-, zenity
+, gnome
 , gnused
 , lib
 , resholve
@@ -35,7 +35,7 @@ resholve.mkDerivation rec {
       coreutils
       ghostscript
       locale
-      zenity
+      gnome.zenity
       gnused
     ];
     fake = {
@@ -43,7 +43,7 @@ resholve.mkDerivation rec {
       external = [ "xmessage" ];
     };
     execer = [
-      "cannot:${zenity}/bin/zenity"
+      "cannot:${gnome.zenity}/bin/zenity"
     ];
     keep."$toutLu" = true;
   };

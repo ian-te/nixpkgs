@@ -37,6 +37,7 @@
   opencascade-occt_7_6,
   openvdb,
   pcre,
+  qhull,
   systemd,
   tbb_2021_11,
   webkitgtk,
@@ -52,7 +53,7 @@ let
       "--enable-debug=no"
     ];
   });
-  openvdb_tbb_2021_8 = openvdb.overrideAttrs (old: {
+  openvdb_tbb_2021_8 = openvdb.overrideAttrs (old: rec {
     buildInputs = [
       openexr
       boost179

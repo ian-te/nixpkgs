@@ -1,6 +1,8 @@
 { lib, stdenv, callPackage, vimUtils, buildEnv, makeWrapper }:
 
 let
+  macvim = callPackage ./macvim.nix { inherit stdenv; };
+
   makeCustomizable = macvim: macvim // {
     # configure expects the same args as vimUtils.vimrcFile.
     # This is the same as the value given to neovim.override { configure = … }
@@ -60,4 +62,5 @@ let
     override = f: makeCustomizable (macvim.override f);
     overrideAttrs = f: makeCustomizable (macvim.overrideAttrs f);
   };
-in { inherit makeCustomizable; }
+in
+  makeCustomizable macvim

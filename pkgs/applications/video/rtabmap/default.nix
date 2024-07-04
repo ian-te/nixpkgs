@@ -68,7 +68,7 @@ stdenv.mkDerivation rec {
     description = "Real-Time Appearance-Based 3D Mapping";
     homepage = "https://introlab.github.io/rtabmap/";
     license = licenses.bsd3;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ ckie ];
     platforms = with platforms; linux;
   };
 }

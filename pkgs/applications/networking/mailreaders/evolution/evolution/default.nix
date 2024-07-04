@@ -23,7 +23,6 @@
 , libical
 , db
 , sqlite
-, adwaita-icon-theme
 , gnome
 , gnome-desktop
 , librsvg
@@ -63,7 +62,7 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     bogofilter
     db
     evolution-data-server

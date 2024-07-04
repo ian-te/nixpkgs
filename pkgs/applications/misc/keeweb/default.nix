@@ -13,7 +13,7 @@
 , nss
 , udev
 , xorg
-, gnome-keyring
+, gnome
 , mesa
 , gtk3
 , libusb1
@@ -54,7 +54,7 @@ let
     xorg.libXScrnSaver
     xorg.libXtst
     xorg.libxshmfence
-    gnome-keyring
+    gnome.gnome-keyring
     mesa
     gtk3
     libusb1

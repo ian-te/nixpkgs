@@ -1,5 +1,6 @@
 { lib
 , fetchFromGitHub
+, fetchpatch
 , callPackage
 , pkg-config
 , cmake
@@ -63,14 +64,14 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "telegram-desktop";
-  version = "5.2.2";
+  version = "5.1.8";
 
   src = fetchFromGitHub {
     owner = "telegramdesktop";
     repo = "tdesktop";
     rev = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-rvd4Ei4MpWiilHCV291UrJkHaUcwth9AWc3PSqjj+EI=";
+    hash = "sha256-YTCvniC8THoz0BUM/gkr97rhbbSVQ+SCE1H3qS68lIM=";
   };
 
   patches = [
@@ -78,7 +79,10 @@ stdenv.mkDerivation rec {
     # the generated .desktop files contains references to unwrapped tdesktop, breaking scheme handling
     # and the scheme handler is already registered in the packaged .desktop file, rendering this unnecessary
     # see https://github.com/NixOS/nixpkgs/issues/218370
-    ./scheme.patch
+    (fetchpatch {
+      url = "https://salsa.debian.org/debian/telegram-desktop/-/raw/09b363ed5a4fcd8ecc3282b9bfede5fbb83f97ef/debian/patches/Disable-register-custom-scheme.patch";
+      hash = "sha256-B8X5lnSpwwdp1HlvyXJWQPybEN+plOwimdV5gW6aY2Y=";
+    })
   ];
 
   postPatch = lib.optionalString stdenv.isLinux ''
@@ -175,7 +179,6 @@ stdenv.mkDerivation rec {
     IOSurface
     Metal
     NaturalLanguage
-    LocalAuthentication
     libicns
   ]);
 

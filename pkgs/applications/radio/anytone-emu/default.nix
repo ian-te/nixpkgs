@@ -36,7 +36,7 @@ rustPlatform.buildRustPackage rec {
     description = "Tiny emulator for AnyTone radios";
     homepage = "https://github.com/hmatuschek/anytone-emu";
     license = licenses.gpl3Only;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ janik ];
     platforms = platforms.linux;
     mainProgram = "anytone-emu";
   };

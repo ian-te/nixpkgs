@@ -1,37 +1,10 @@
-{ bundlerEnv
-, cacert
-, defaultGemConfig
-, fetchFromGitLab
-, fetchYarnDeps
-, fixup-yarn-lock
-, git
-, gitlabEnterprise ? false
-, lib
-, makeWrapper
-, nettools
-, nixosTests
-, nodejs
-, replace
-, ruby_3_2
-, stdenv
-, tzdata
-, yarn
-
-# gem dependencies:
-# gitlab-glfm-markdown
-, buildRubyGem, cargo, rustc, rustPlatform
-
-# gpgme
-, pkg-config
-
-# openssl
-, openssl
-
-# ruby-magic
-, file
-
-# static-holmes
-, icu, which, zlib
+{ stdenv, lib, fetchFromGitLab, bundlerEnv
+, ruby_3_1, tzdata, git, nettools, nixosTests, nodejs, openssl
+, defaultGemConfig, buildRubyGem
+, gitlabEnterprise ? false, callPackage, yarn
+, fixup-yarn-lock, replace, file, cacert, fetchYarnDeps, makeWrapper, pkg-config
+, cargo, rustc, rustPlatform
+, icu, zlib, which
 }:
 
 let
@@ -47,7 +20,7 @@ let
 
   rubyEnv = bundlerEnv rec {
     name = "gitlab-env-${version}";
-    ruby = ruby_3_2;
+    ruby = ruby_3_1;
     gemdir = ./rubyEnv;
     gemset = import (gemdir + "/gemset.nix") src;
     gemConfig = defaultGemConfig // {
@@ -77,7 +50,7 @@ let
                 cp Cargo.lock $out
               '';
             };
-            hash = "sha256-VYjCYUikORuXx27OYWyumBxeHw9aj/S1wcr9vLIsXeo=";
+            hash = "sha256-SncgYYnoSaWA4kQWonoXXbSMu1mnwTyhdLXFagqgH+o=";
           };
 
           dontBuild = false;
@@ -102,17 +75,12 @@ let
             find $out -type f -name .rustc_info.json -delete
           '';
         };
-
         static_holmes = attrs: {
-          nativeBuildInputs = [
-            icu
-            which
-            zlib.dev
-          ];
+          buildInputs = [ which icu zlib ];
         };
       };
     groups = [
-      "default" "unicorn" "ed25519" "metrics" "development" "puma" "test" "kerberos" "opentelemetry"
+      "default" "unicorn" "ed25519" "metrics" "development" "puma" "test" "kerberos"
     ];
     # N.B. omniauth_oauth2_generic and apollo_upload_server both provide a
     # `console` executable.

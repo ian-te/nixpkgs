@@ -5,7 +5,6 @@
 , pkg-config
 , meson
 , ninja
-, adwaita-icon-theme
 , exiv2
 , libheif
 , libjpeg
@@ -59,7 +58,7 @@ stdenv.mkDerivation rec {
     clutter-gtk
     exiv2
     glib
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     gsettings-desktop-schemas
     gst_all_1.gst-plugins-base
     (gst_all_1.gst-plugins-good.override { gtkSupport = true; })

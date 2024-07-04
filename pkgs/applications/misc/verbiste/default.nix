@@ -1,18 +1,18 @@
-{ lib, stdenv, fetchurl, pkg-config, gtk2, libxml2 }:
+{ lib, stdenv, fetchurl, pkg-config, libgnomeui, libxml2 }:
 
 stdenv.mkDerivation rec {
   pname = "verbiste";
 
-  version = "0.1.48";
+  version = "0.1.47";
 
   src = fetchurl {
-    url = "https://perso.b2b2c.ca/~sarrazip/dev/verbiste-${version}.tar.gz";
-    hash = "sha256-qp0OFpH4DInWjzraDI6+CeKh85JkbwVYHlJruIrGnBM=";
+    url = "https://perso.b2b2c.ca/~sarrazip/dev/${pname}-${version}.tar.gz";
+    sha256 = "02kzin3pky2q2jnihrch8y0hy043kqqmzxq8j741x80kl0j1qxkm";
   };
 
   nativeBuildInputs = [ pkg-config ];
 
-  buildInputs = [ gtk2 libxml2 ];
+  buildInputs = [ libgnomeui libxml2 ];
 
   enableParallelBuilding = true;
 

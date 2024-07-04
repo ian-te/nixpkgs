@@ -12,7 +12,7 @@
 , glib
 , glib-networking
 , glibmm
-, adwaita-icon-theme
+, gnome
 , gsettings-desktop-schemas
 , gtk3
 , gtkmm3
@@ -76,7 +76,7 @@ stdenv.mkDerivation (finalAttrs: {
     glib
     glib-networking.out
     glibmm
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
     gsettings-desktop-schemas
     gtk3
     gtkmm3

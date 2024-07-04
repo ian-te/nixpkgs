@@ -11,7 +11,6 @@
 , qtbase
 , qtpositioning
 , qtsvg
-, qtwayland
 , libGLU
 , libGL
 , zlib
@@ -69,7 +68,6 @@ in stdenv.mkDerivation rec {
     qtbase
     qtpositioning
     qtsvg
-    qtwayland
     libGLU
     libGL
     zlib

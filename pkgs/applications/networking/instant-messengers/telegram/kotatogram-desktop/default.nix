@@ -6,18 +6,17 @@
 , cmake
 , ninja
 , clang
-, lld
 , python3
 , wrapQtAppsHook
 , removeReferencesTo
+, extra-cmake-modules
 , qtbase
 , qtimageformats
 , qtsvg
-, qtwayland
-, kcoreaddons
+, kwayland
 , lz4
 , xxHash
-, ffmpeg
+, ffmpeg_4
 , openalSoft
 , minizip
 , libopus
@@ -26,58 +25,93 @@
 , range-v3
 , tl-expected
 , hunspell
-, gobject-introspection
-, glibmm_2_68
+, glibmm
 , jemalloc
 , rnnoise
 , abseil-cpp
 , microsoft-gsl
-, boost
-, fmt
 , wayland
 , libicns
-, darwin
+, Cocoa
+, CoreFoundation
+, CoreServices
+, CoreText
+, CoreGraphics
+, CoreMedia
+, OpenGL
+, AudioUnit
+, ApplicationServices
+, Foundation
+, AGL
+, Security
+, SystemConfiguration
+, Carbon
+, AudioToolbox
+, VideoToolbox
+, VideoDecodeAcceleration
+, AVFoundation
+, CoreAudio
+, CoreVideo
+, CoreMediaIO
+, QuartzCore
+, AppKit
+, CoreWLAN
+, WebKit
+, IOKit
+, GSS
+, MediaPlayer
+, IOSurface
+, Metal
+, MetalKit
 }:
 
 let
   tg_owt = callPackage ./tg_owt.nix {
+    abseil-cpp = abseil-cpp.override {
+      # abseil-cpp should use the same compiler
+      inherit stdenv;
+      cxxStandard = "20";
+    };
+
     # tg_owt should use the same compiler
     inherit stdenv;
-  };
 
-  mainProgram = if stdenv.isLinux then "kotatogram-desktop" else "Kotatogram";
+    inherit Cocoa AppKit IOKit IOSurface Foundation AVFoundation CoreMedia VideoToolbox
+      CoreGraphics CoreVideo OpenGL Metal MetalKit CoreFoundation ApplicationServices;
+  };
 in
 stdenv.mkDerivation rec {
   pname = "kotatogram-desktop";
-  version = "0-unstable-2024-07-01";
+  version = "1.4.9";
 
   src = fetchFromGitHub {
     owner = "kotatogram";
     repo = "kotatogram-desktop";
-    rev = "fbb22ebd3e39dfa4a036fa79a7a3f78b86b1cea2";
-    sha256 = "sha256-ccfmaqapk9ct+5kvBI02xHJ7YCGmm1CcqwM+3hC1bk0=";
+    rev = "k${version}";
+    sha256 = "sha256-6bF/6fr8mJyyVg53qUykysL7chuewtJB8E22kVyxjHw=";
     fetchSubmodules = true;
   };
 
   patches = [
-    ./macos.patch
-    ./macos-opengl.patch
+    ./kf594.patch
+    ./shortcuts-binary-path.patch
   ];
 
   postPatch = lib.optionalString stdenv.isLinux ''
     substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-      --replace-fail '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
+      --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
     substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-      --replace-fail '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
+      --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
     substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
-      --replace-fail '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"'
+      --replace '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"'
   '' + lib.optionalString stdenv.isDarwin ''
-    substituteInPlace Telegram/lib_webrtc/webrtc/platform/mac/webrtc_environment_mac.mm \
-      --replace-fail kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
+    sed -i "13i#import <CoreAudio/CoreAudio.h>" Telegram/lib_webrtc/webrtc/mac/webrtc_media_devices_mac.mm
+    substituteInPlace Telegram/CMakeLists.txt \
+      --replace 'COMMAND iconutil' 'COMMAND png2icns' \
+      --replace '--convert icns' "" \
+      --replace '--output AppIcon.icns' 'AppIcon.icns' \
+      --replace "\''${appicon_path}" "\''${appicon_path}/icon_16x16.png \''${appicon_path}/icon_32x32.png \''${appicon_path}/icon_128x128.png \''${appicon_path}/icon_256x256.png \''${appicon_path}/icon_512x512.png"
   '';
-
-  # Wrapping the inside of the app bundles, avoiding double-wrapping
-  dontWrapQtApps = stdenv.isDarwin;
 
   nativeBuildInputs = [
     pkg-config
@@ -89,9 +123,7 @@ stdenv.mkDerivation rec {
   ] ++ lib.optionals stdenv.isLinux [
     # to build bundled libdispatch
     clang
-    gobject-introspection
-  ] ++ lib.optionals stdenv.isDarwin [
-    lld
+    extra-cmake-modules
   ];
 
   buildInputs = [
@@ -100,7 +132,7 @@ stdenv.mkDerivation rec {
     qtsvg
     lz4
     xxHash
-    ffmpeg
+    ffmpeg_4
     openalSoft
     minizip
     libopus
@@ -109,18 +141,15 @@ stdenv.mkDerivation rec {
     rnnoise
     tg_owt
     microsoft-gsl
-    boost
   ] ++ lib.optionals stdenv.isLinux [
-    qtwayland
-    kcoreaddons
+    kwayland
     alsa-lib
     libpulseaudio
     hunspell
-    glibmm_2_68
+    glibmm
     jemalloc
-    fmt
     wayland
-  ] ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk_11_0.frameworks; [
+  ] ++ lib.optionals stdenv.isDarwin [
     Cocoa
     CoreFoundation
     CoreServices
@@ -151,34 +180,27 @@ stdenv.mkDerivation rec {
     MediaPlayer
     IOSurface
     Metal
-    NaturalLanguage
     libicns
-  ]);
+  ];
 
   enableParallelBuilding = true;
 
-  env = lib.optionalAttrs stdenv.isDarwin {
-    NIX_CFLAGS_LINK = "-fuse-ld=lld";
-  };
-
   cmakeFlags = [
     "-DTDESKTOP_API_TEST=ON"
+    "-DDESKTOP_APP_QT6=OFF"
   ];
 
   installPhase = lib.optionalString stdenv.isDarwin ''
     mkdir -p $out/Applications
-    cp -r ${mainProgram}.app $out/Applications
-    ln -s $out/{Applications/${mainProgram}.app/Contents/MacOS,bin}
+    cp -r Kotatogram.app $out/Applications
+    ln -s $out/Applications/Kotatogram.app/Contents/MacOS $out/bin
   '';
 
   preFixup = ''
-    remove-references-to -t ${stdenv.cc.cc} $out/bin/${mainProgram}
-    remove-references-to -t ${microsoft-gsl} $out/bin/${mainProgram}
-    remove-references-to -t ${tg_owt.dev} $out/bin/${mainProgram}
-  '';
-
-  postFixup = lib.optionalString stdenv.isDarwin ''
-    wrapQtApp $out/Applications/${mainProgram}.app/Contents/MacOS/${mainProgram}
+    binName=${if stdenv.isLinux then "kotatogram-desktop" else "Kotatogram"}
+    remove-references-to -t ${stdenv.cc.cc} $out/bin/$binName
+    remove-references-to -t ${microsoft-gsl} $out/bin/$binName
+    remove-references-to -t ${tg_owt.dev} $out/bin/$binName
   '';
 
   passthru = {
@@ -186,8 +208,8 @@ stdenv.mkDerivation rec {
   };
 
   meta = with lib; {
-    inherit mainProgram;
     description = "Kotatogram – experimental Telegram Desktop fork";
+    mainProgram = "kotatogram-desktop";
     longDescription = ''
       Unofficial desktop client for the Telegram messenger, based on Telegram Desktop.
 

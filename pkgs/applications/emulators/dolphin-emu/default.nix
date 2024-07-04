@@ -188,6 +188,8 @@ stdenv.mkDerivation rec {
     branch = "master";
     license = licenses.gpl2Plus;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [
+      ashkitten
+    ];
   };
 }

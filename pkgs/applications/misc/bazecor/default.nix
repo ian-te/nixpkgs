@@ -1,12 +1,12 @@
-{
-  lib,
-  appimageTools,
-  fetchurl,
-  makeWrapper,
+{ lib
+, appimageTools
+, fetchurl
 }:
-let
+
+appimageTools.wrapAppImage rec {
   pname = "bazecor";
   version = "1.3.11";
+
   src = appimageTools.extract {
     inherit pname version;
     src = fetchurl {
@@ -18,14 +18,11 @@ let
     postExtract = ''
       substituteInPlace \
         $out/usr/lib/bazecor/resources/app/.webpack/main/index.js \
-        --replace-fail \
+        --replace \
           'checkUdev=()=>{try{if(c.default.existsSync(f))return c.default.readFileSync(f,"utf-8").trim()===l.trim()}catch(e){console.error(e)}return!1}' \
           'checkUdev=()=>{return 1}'
     '';
   };
-in
-appimageTools.wrapAppImage {
-  inherit pname version src;
 
   # also make sure to update the udev rules in ./10-dygma.rules; most recently
   # taken from
@@ -38,18 +35,14 @@ appimageTools.wrapAppImage {
   # to allow non-root modifications to the keyboards.
 
   extraInstallCommands = ''
-    source "${makeWrapper}/nix-support/setup-hook"
-    wrapProgram $out/bin/bazecor \
-      --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
-
     install -m 444 -D ${src}/Bazecor.desktop -t $out/share/applications
+    substituteInPlace $out/share/applications/Bazecor.desktop \
+      --replace 'Exec=Bazecor' 'Exec=bazecor'
+
     install -m 444 -D ${src}/bazecor.png -t $out/share/pixmaps
 
     mkdir -p $out/lib/udev/rules.d
-    install -m 444 -D ${./10-dygma.rules} $out/lib/udev/rules.d/10-dygma.rules
-
-    substituteInPlace $out/share/applications/Bazecor.desktop \
-      --replace-fail 'Exec=Bazecor' 'Exec=bazecor'
+    ln -s --target-directory=$out/lib/udev/rules.d ${./10-dygma.rules}
   '';
 
   meta = {
@@ -58,10 +51,7 @@ appimageTools.wrapAppImage {
     changelog = "https://github.com/Dygmalab/Bazecor/releases/tag/v${version}";
     sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [
-      amesgen
-      gcleroux
-    ];
+    maintainers = with lib.maintainers; [ amesgen ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "bazecor";
   };

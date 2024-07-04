@@ -7,7 +7,7 @@
 , ghc_filesystem
 , glew
 , glfw
-, zenity
+, gnome
 , gtk3-x11
 , imagemagick
 , jansson
@@ -173,7 +173,7 @@ stdenv.mkDerivation rec {
 
     # Fix reference to zenity
     substituteInPlace dep/osdialog/osdialog_zenity.c \
-      --replace 'zenityBin[] = "zenity"' 'zenityBin[] = "${zenity}/bin/zenity"'
+      --replace 'zenityBin[] = "zenity"' 'zenityBin[] = "${gnome.zenity}/bin/zenity"'
   '';
 
   nativeBuildInputs = [
@@ -191,7 +191,7 @@ stdenv.mkDerivation rec {
     ghc_filesystem
     glew
     glfw
-    zenity
+    gnome.zenity
     gtk3-x11
     jansson
     libarchive
